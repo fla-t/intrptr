@@ -35,6 +35,11 @@ enum Tokens {
 	FBC, // flower bracket close
 	PO, // parenthesis open
 	PC, // parenthesis close
+	COL, // colon
+	SCOL,
+	COM,
+	INC,
+	DEC,
 };
 
 #endif 

@@ -12,7 +12,6 @@ public:
 	~Lexer();
 	
 	vector<Pair> readFile(string filename);
-	void test();
 };
 
 

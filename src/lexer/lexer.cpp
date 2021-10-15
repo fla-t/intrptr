@@ -6,26 +6,20 @@
 Lexer::Lexer() {}
 Lexer::~Lexer() {}
 
-vector<Pair> Lexer::readFile(string filename) {
-	ifstream filehandler;
-	filehandler.open(filename);
+// vector<Pair> Lexer::readFile(string filename) {
+// 	ifstream filehandler;
+// 	filehandler.open(filename);
 
-	// token lexeme pairs
-	vector<Pair> TLpairs;
+// 	// token lexeme pairs
+// 	vector<Pair> TLpairs;
 	
-	if (!filehandler.is_open()) {
-		while (!filehandler.eof()) {
-			string temp;
+// 	if (!filehandler.is_open()) {
+// 		while (!filehandler.eof()) {
+// 			char
 
-			filehandler >> temp;
-
-		}
-	}
-	else {
-		cout<< "File not found!" <<endl;
-	}
-}
-
-void Lexer::test() {
-	cout<<"it works tho"<<endl;
-}
+// 		}
+// 	}
+// 	else {
+// 		cout<< "File not found!" <<endl;
+// 	}
+// }
