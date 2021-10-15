@@ -1,6 +1,7 @@
 #include "./lexer.h"
 #include <fstream>
 #include <iostream>
+#include <regex>
 
 Lexer::Lexer() {}
 Lexer::~Lexer() {}
@@ -17,12 +18,7 @@ vector<Pair> Lexer::readFile(string filename) {
 			string temp;
 
 			filehandler >> temp;
-			if (temp == "int") {
-				Pair tempPair;
 
-				tempPair.token = INT;
-				tempPair.lexeme = "";
-			}
 		}
 	}
 	else {
@@ -30,3 +26,6 @@ vector<Pair> Lexer::readFile(string filename) {
 	}
 }
 
+void Lexer::test() {
+	cout<<"it works tho"<<endl;
+}

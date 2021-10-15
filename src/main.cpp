@@ -3,5 +3,6 @@
 using namespace std;
 
 int main() {
-	cout<<"everthing compiles"<<endl;
+	Lexer newlex;
+	newlex.test();
 }
