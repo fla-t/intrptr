@@ -7,7 +7,7 @@ using namespace std;
 #define PAIR_H
 
 struct Pair {
-	Tokens token;
+	Token token;
 	string lexeme;
 };
 
