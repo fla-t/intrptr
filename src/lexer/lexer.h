@@ -1,5 +1,8 @@
 #include "../utils/pair.h"
+#include <regex>
+#include <stdexcept>
 #include <vector>
+#include <fstream>
 using namespace std;
 
 #ifndef LEXER_H

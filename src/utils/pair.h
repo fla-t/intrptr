@@ -7,8 +7,8 @@ using namespace std;
 #define PAIR_H
 
 struct Pair {
-	Tokens token;
-	string lexeme;
+	Token token;
+	string lexeme = "\0";
 };
 
 
