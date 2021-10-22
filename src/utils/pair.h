@@ -8,7 +8,7 @@ using namespace std;
 
 struct Pair {
 	Token token;
-	string lexeme;
+	string lexeme = "\0";
 };
 
 

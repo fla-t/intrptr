@@ -1,0 +1,97 @@
+file parsed successfully !!
+Token: int			lexeme: 
+Token: COL			lexeme: 
+Token: identifier			lexeme: num
+Token: SCOL			lexeme: 
+Token: char			lexeme: 
+Token: COL			lexeme: 
+Token: identifier			lexeme: my_char
+Token: SCOL			lexeme: 
+Token: single line comment			lexeme:  lets assign variable my_char a value
+Token: identifier			lexeme: my_char
+Token: assignment			lexeme: 
+Token: char literal			lexeme: d
+Token: SCOL			lexeme: 
+Token: print			lexeme: 
+Token: PO			lexeme: 
+Token: string literal			lexeme: my char contains: 
+Token: PC			lexeme: 
+Token: SCOL			lexeme: 
+Token: println			lexeme: 
+Token: PO			lexeme: 
+Token: identifier			lexeme: my_char
+Token: PC			lexeme: 
+Token: SCOL			lexeme: 
+Token: multiple line comment			lexeme: 
+	The program here onwards is an iterative algorithm
+	for fibonacci numbers
+	*/
+Token: println			lexeme: 
+Token: PO			lexeme: 
+Token: string literal			lexeme: enter a number
+Token: PC			lexeme: 
+Token: SCOL			lexeme: 
+Token: input			lexeme: 
+Token: input			lexeme: 
+Token: identifier			lexeme: num
+Token: SCOL			lexeme: 
+Token: int			lexeme: 
+Token: COL			lexeme: 
+Token: identifier			lexeme: a
+Token: assignment			lexeme: 
+Token: number			lexeme: 0
+Token: COM			lexeme: 
+Token: identifier			lexeme: b
+Token: assignment			lexeme: 
+Token: number			lexeme: 1
+Token: COM			lexeme: 
+Token: identifier			lexeme: c
+Token: assignment			lexeme: 
+Token: number			lexeme: 0
+Token: SCOL			lexeme: 
+Token: println			lexeme: 
+Token: PO			lexeme: 
+Token: string literal			lexeme: The fibonacci seq is: 
+Token: PC			lexeme: 
+Token: SCOL			lexeme: 
+Token: println			lexeme: 
+Token: PO			lexeme: 
+Token: identifier			lexeme: a
+Token: PC			lexeme: 
+Token: SCOL			lexeme: 
+Token: println			lexeme: 
+Token: PO			lexeme: 
+Token: identifier			lexeme: b
+Token: PC			lexeme: 
+Token: SCOL			lexeme: 
+Token: while			lexeme: 
+Token: identifier			lexeme: c
+Token: less than			lexeme: 
+Token: identifier			lexeme: num
+Token: COL			lexeme: 
+Token: FBO			lexeme: 
+Token: int			lexeme: 
+Token: COL			lexeme: 
+Token: identifier			lexeme: temp
+Token: assignment			lexeme: 
+Token: identifier			lexeme: a
+Token: Addition			lexeme: 
+Token: identifier			lexeme: b
+Token: SCOL			lexeme: 
+Token: identifier			lexeme: a
+Token: assignment			lexeme: 
+Token: identifier			lexeme: b
+Token: SCOL			lexeme: 
+Token: identifier			lexeme: b
+Token: assignment			lexeme: 
+Token: identifier			lexeme: temp
+Token: SCOL			lexeme: 
+Token: println			lexeme: 
+Token: PO			lexeme: 
+Token: identifier			lexeme: temp
+Token: PC			lexeme: 
+Token: SCOL			lexeme: 
+Token: identifier			lexeme: c
+Token: INC			lexeme: 
+Token: SCOL			lexeme: 
+Token: FBC			lexeme: 

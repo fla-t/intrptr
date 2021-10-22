@@ -2,6 +2,8 @@
     "files.associations": {
         "xstring": "cpp",
         "fstream": "cpp",
-        "istream": "cpp"
+        "istream": "cpp",
+        "system_error": "cpp",
+        "stdexcept": "cpp"
     }
 }
