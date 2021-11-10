@@ -292,7 +292,8 @@ vector<Pair> Lexer::readFile(string filename) {
 				}
 			}
 			catch(const char *error) {
-				cerr<<"Error: "<<error<<endl;
+				cerr<<"Error: "<<"at line: "<<getCurrentLine(filehandler)<<endl;
+				cerr<<error<<endl;
 			}
 		}
 		if (!filehandler.eof()) {

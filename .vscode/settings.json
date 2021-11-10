@@ -4,6 +4,8 @@
         "fstream": "cpp",
         "istream": "cpp",
         "system_error": "cpp",
-        "stdexcept": "cpp"
+        "stdexcept": "cpp",
+        "xlocale": "cpp",
+        "vector": "cpp"
     }
 }
