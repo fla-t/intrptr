@@ -13,6 +13,7 @@ int main(int argc, char** argv) {
 			cout << "Token: " << token_to_string[result[i].token] << "\t\t\t" << "lexeme: " << result[i].lexeme << endl;
 		}
 		
+		
 	}
 	else {
 		cout<<"no file requested"<<endl;

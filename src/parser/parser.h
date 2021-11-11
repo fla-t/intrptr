@@ -19,10 +19,18 @@ public:
 	void match(Token) {}
 
 	void statement() {}
-	void expr() {}
 	void input() {}
+	void assignment() {}
 	void funcs() {}
 	void ifcmd() {}
+	void whilecmd() {}
+
+	void expr() {}
+	void T() {}
+	void R() {}
+	void F() {}
+	void Rprime() {}
+	
 
 	void docmd() {}
 	void branch() {}

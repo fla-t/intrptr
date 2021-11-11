@@ -33,6 +33,25 @@ void Parser::statement() {
 	else if (currentToken->token == Token::IF) {
 		ifcmd(); statement();
 	}
+	else if (currentToken->token == Token::WHILE) {
+		whilecmd(); statement();
+	}
+	else if (currentToken->token == Token::ID) {
+		match(Token::ID);
+		if (currentToken->token == Token::AS) {
+			assignment(); 
+			statement();
+		}
+		else {
+			currentToken--;
+			expr();
+			match(Token::SCOL);
+			statement();
+		}
+	}
+	else {
+
+	}
 }
 
 void Parser::initialization() {
@@ -45,11 +64,12 @@ void Parser::initialization() {
 }
 
 void Parser::charinit() {
-// includes charid
+	// includes charid
 	match(Token::CHAR); 
 	match(Token::COL);
 	match(Token::ID);
 
+	// charinit part
 	if (currentToken->token == Token::AS) {
 		match(Token::AS);
 		expr();
@@ -83,12 +103,12 @@ void Parser::charinitlist() {
 }
 
 void Parser::intinit() {
-// includes intid
+	// includes intid
 	match(Token::INT); 
 	match(Token::COL);
 	match(Token::ID);
 
-//intinit part below
+	// intinit part below
 	if (currentToken->token == Token::AS) {
 		match(Token::AS);
 		expr();
@@ -102,7 +122,7 @@ void Parser::intinit() {
 }
 
 void Parser::intinitlist() {
-// includes contidinit
+	// includes contidinit
 	if (currentToken->token == Token::COM) {
 		match(Token::COM);
 		match(Token::ID);
@@ -205,5 +225,95 @@ void Parser::RO () {
 	}
 	else if (currentToken->token == Token::EQ) {
 		match(Token::EQ);
+	}
+}
+
+void Parser::docmd () {
+	match(Token::COL);
+	match(Token::FBO);
+	statement();
+	match(Token::FBC);
+}
+
+void Parser::branch() {
+	if (currentToken->token == Token::ELSE) {
+		match(Token::ELSE);
+		docmd();
+	}
+	else if (currentToken->token == Token::ELIF) {
+		match(Token::ELIF);
+		comparison();
+		docmd();
+		branch();
+	}
+	else { }
+}
+
+void Parser::whilecmd() {
+	match(Token::WHILE);
+	comparison();
+	docmd();
+}
+
+void Parser::expr() {
+	T();
+	R();
+}
+
+void Parser::T() {
+	F(); 
+	Rprime();
+}
+
+void Parser::R() {
+	if (currentToken->token == Token::ADD) {
+		match(Token::ADD);
+		T(); 
+		R();
+	}
+	else if (currentToken->token == Token::SUB) {
+		match(Token::SUB);
+		T();
+		R();
+	}
+	else {
+
+	}
+}
+
+void Parser::Rprime() {
+	if (currentToken->token == Token::MUL) {
+		match(Token::MUL);
+		F();
+		Rprime();
+	}
+	else if (currentToken->token == Token::DIV) {
+		match(Token::DIV);
+		F();
+		Rprime();
+	}
+	else {}
+}
+
+void Parser::F() {
+	if (currentToken->token == Token::ID) {
+		match(Token::ID);
+		if (currentToken->token == Token::INC) {
+			match(Token::INC);
+		}
+		else if (currentToken->token == Token::DEC) {
+			match(Token::DEC);
+		}
+	}
+	else if (currentToken->token == Token::NUM) {
+		match(Token::NUM);
+	}
+	else if (currentToken->token == Token::LIT) {
+		match(Token::LIT);
+	}
+	else if (currentToken->token == Token::PO) {
+		match(Token::PO);
+		expr();
+		match(Token::PC);
 	}
 }
