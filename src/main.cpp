@@ -1,5 +1,6 @@
 #include "./lexer/lexer.h"
 #include "./utils/tokenMap.h"
+#include "./parser/parser.h"
 #include <iostream>
 
 
@@ -13,7 +14,9 @@ int main(int argc, char** argv) {
 			cout << "Token: " << token_to_string[result[i].token] << "\t\t\t" << "lexeme: " << result[i].lexeme << endl;
 		}
 		
-		
+		// Parser parser(result);
+		// parser.Parse();
+
 	}
 	else {
 		cout<<"no file requested"<<endl;

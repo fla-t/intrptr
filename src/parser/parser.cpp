@@ -6,8 +6,13 @@ Parser::Parser(vector<Pair> _TokenStream) {
 }
 
 void Parser::Parse() {
-	if (this->tokenStream.empty()) { cout << "The tokenStream is empty !" << endl; return; }
-
+	if (this->tokenStream.empty()) { 
+		cout << "The tokenStream is empty !" << endl;
+		return;
+	}
+	else {
+		statement();
+	}
 }
 
 
