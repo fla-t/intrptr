@@ -39,6 +39,7 @@ void Parser::statement() {
 	else if (currentToken->token == Token::ID) {
 		match(Token::ID);
 		if (currentToken->token == Token::AS) {
+			currentToken--;
 			assignment(); 
 			statement();
 		}
@@ -316,4 +317,11 @@ void Parser::F() {
 		expr();
 		match(Token::PC);
 	}
+}
+
+void Parser::assignment() {
+	match(Token::ID);
+	match(Token::AS);
+	expr();
+	match(Token::SCOL);
 }

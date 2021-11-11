@@ -6,6 +6,12 @@
         "system_error": "cpp",
         "stdexcept": "cpp",
         "xlocale": "cpp",
-        "vector": "cpp"
+        "vector": "cpp",
+        "*.tcc": "cpp",
+        "optional": "cpp",
+        "string_view": "cpp",
+        "functional": "cpp",
+        "regex": "cpp",
+        "tuple": "cpp"
     }
 }
