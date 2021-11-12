@@ -1,4 +1,4 @@
-TARGET_EXEC ?= compilerExecutable.exe
+TARGET_EXEC ?= compilerExecutable
 
 BUILD_DIR ?= ./build
 SRC_DIRS ?= ./src

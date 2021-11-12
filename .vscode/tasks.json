@@ -2,25 +2,14 @@
     "version": "2.0.0",
     "tasks": [
         {
-            "type": "cppbuild",
-            "label": "C/C++: g++.exe build active file",
-            "command": "C:/Program Files (x86)/mingw-w64/i686-8.1.0-posix-dwarf-rt_v6-rev0/mingw32/bin/g++.exe",
-            "args": [
-                "-fdiagnostics-color=always",
-                "-g",
-                "${workspaceFolder}\\src\\*.cpp",
-                "-o",
-                "${workspaceFolder}\\build\\compiler.exe"
-            ],
-            "options": {
-                "cwd": "C:/Program Files (x86)/mingw-w64/i686-8.1.0-posix-dwarf-rt_v6-rev0/mingw32/bin"
-            },
-            "problemMatcher": ["$gcc"],
+            "label": "build",
+            "type": "shell",
+            "command": "make",
             "group": {
                 "kind": "build",
                 "isDefault": true
             },
-            "detail": "compiler: \"C:/Program Files (x86)/mingw-w64/i686-8.1.0-posix-dwarf-rt_v6-rev0/mingw32/bin/g++.exe\""
+            "problemMatcher": "$gcc"
         }
     ]
 }
