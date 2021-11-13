@@ -1,0 +1,2 @@
+int: num;
+char: my_char;
