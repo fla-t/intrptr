@@ -2,6 +2,7 @@
 #include "../utils/pair.h"
 #include <vector>
 #include <iostream>
+#include <map>
 using namespace std;
 
 #ifndef PARSER_H
@@ -11,11 +12,12 @@ using namespace std;
 class Parser {
 	vector<Pair> tokenStream;
 	vector<Pair>::iterator currentToken;
+	map<string, Token> datatypeTable;
 
 public:
 	Parser(vector<Pair>);
+	void PrintDataTypeTable();
 	void Parse();
-	void PrintParseTree();
 	void match(Token);
 
 	void statement();

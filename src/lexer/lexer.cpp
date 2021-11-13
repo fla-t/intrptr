@@ -63,7 +63,7 @@ vector<Pair> Lexer::readFile(string filename) {
 	regex numeric("[0-9]+");
 
 	ifstream filehandler;
-	filehandler.open("testfiles/examplecode.txt");
+	filehandler.open(filename);
 	vector<Pair> TLpairs;
 	
 	if (filehandler.is_open()) {
