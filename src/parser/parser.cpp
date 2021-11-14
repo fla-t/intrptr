@@ -1,15 +1,16 @@
 #include "parser.h"
 #include "../utils/tokenMap.h"
+#include <string>
 
 #define POP_PREFIX prefix.pop_back(); prefix.pop_back(); prefix.pop_back(); prefix.pop_back(); prefix.pop_back(); prefix.pop_back();
-#define CONT_BAR "│  \0"
-#define TAB_SPACE "   \0"
+#define CONT_BAR "│  "
+#define TAB_SPACE "   "
 
-string prefix;
+static string prefix;
 
 void printTabs(bool continued = true) {
 	cout<<prefix;
-	cout << (continued ?  "├── \0" : "└── \0");
+	cout << (continued ?  "├── " : "└── ");
 }
 
 Parser::Parser(vector<Pair> _TokenStream) {
