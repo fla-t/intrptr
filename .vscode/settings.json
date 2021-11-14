@@ -1,5 +1,18 @@
 {
     "files.associations": {
-        "iostream": "cpp"
+        "iostream": "cpp",
+        "xtree": "cpp",
+        "algorithm": "cpp",
+        "cmath": "cpp",
+        "fstream": "cpp",
+        "memory": "cpp",
+        "regex": "cpp",
+        "xlocale": "cpp",
+        "xlocmon": "cpp",
+        "xloctime": "cpp",
+        "xmemory": "cpp",
+        "xstring": "cpp",
+        "xutility": "cpp",
+        "ostream": "cpp"
     }
 }
