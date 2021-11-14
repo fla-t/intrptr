@@ -9,7 +9,7 @@
             "type": "cppdbg",
             "request": "launch",
             "program": "${workspaceFolder}\\bin\\windowsExecutable.exe",
-            "args": ["testfiles/simpleinits.txt"],
+            "args": ["testfiles/examplecode.txt"],
             "stopAtEntry": false,
             "cwd": "${workspaceFolder}",
             "environment": [],
