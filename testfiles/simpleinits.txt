@@ -1,2 +1,3 @@
-int: num;
-char: my_char;
+char: as;
+int: d;
+int: a=0, b=1, c=0;

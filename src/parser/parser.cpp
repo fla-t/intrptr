@@ -1,13 +1,13 @@
 #include "parser.h"
 #include "../utils/tokenMap.h"
+#define POP_TABS tabs.pop_back(); tabs.pop_back(); tabs.pop_back(); tabs.pop_back(); tabs.pop_back(); tabs.pop_back();
+//"└──" , "├──" , "│" tabs.append("│  ");
 
-//"└──" , "├──" , "│"
+string tabs;
 
-string tabs = "";
-
-void printTabs(string tabs, bool continued = true) {
+void printTabs(bool continued = true) {
 	// for (int i = 0; i < tabs; i++) { cout << "    "; }
-	if (continued) {tabs.append("│  ")}
+	cout<<tabs;
 	cout << (continued ?  "├── " : "└── ");
 }
 
@@ -43,7 +43,7 @@ void Parser::Parse() {
 
 void Parser::match(Token symbol, bool continued = true) {
 	if (symbol == this->currentToken->token) {
-		printTabs(tabs, continued);
+		printTabs(continued);
 		if (currentToken->token == Token::ID) {
 			cout << currentToken->lexeme << endl;
 		}
@@ -60,59 +60,70 @@ void Parser::match(Token symbol, bool continued = true) {
 void Parser::statement() {
 	if (currentToken != tokenStream.end()) {
 		
-		printTabs(tabs);
+		printTabs();
 		cout << "Statement" << endl;
-		tabs++;
+		tabs.append("│  ");
+		tabs.append("   ");
 
 		if (currentToken->token == Token::INT || currentToken->token == Token::CHAR) {
-			initialization(); tabs--; statement();
+			initialization();
+			POP_TABS
+			statement();
 		}
 		else if (currentToken->token == Token::INPUT) { 
-			input(); tabs--; statement();
+			input(); 
+			POP_TABS 
+			statement();
 		}
 		else if (currentToken->token == Token::PRINT || currentToken->token == Token::PRINTLN) {
-			funcs(); tabs--; statement();
+			funcs(); 
+			POP_TABS 
+			statement();
 		}
 		else if (currentToken->token == Token::IF) {
-			ifcmd(); tabs--; statement();
+			ifcmd(); 
+			POP_TABS 
+			statement();
 		}
 		else if (currentToken->token == Token::WHILE) {
-			whilecmd(); tabs--; statement();
+			whilecmd(); 
+			POP_TABS 
+			statement();
 		}
 		else if (currentToken->token == Token::ID) {
 			currentToken++;
 			if (currentToken->token == Token::AS) {
 				currentToken--;
 				assignment(); 
-				tabs--;
+				POP_TABS
 				statement();
 			}
 			else {
 				currentToken--;
 				expr();
 				match(Token::SCOL, false);
-				tabs--;
+				POP_TABS
 				statement();
 			}
 		}
 		else if (currentToken->token == Token::SLC || currentToken->token == Token::MLC) {
 			currentToken++; 
-			printTabs(tabs, false);
+			printTabs( false);
 			cout<<"Comment Ignored"<<endl;
-			tabs--;
+			POP_TABS
 			statement();
 		}
 		else {
-			tabs--;
+			POP_TABS
 		}
 	}
 	else {}
 }
 
 void Parser::initialization() {
-	printTabs(tabs, false);
+	printTabs( false);
 	cout << "Initialization" << endl;
-	tabs++;
+	tabs.append("   ");
 	if (currentToken->token == Token::INT) {
 		intinit();
 	}
@@ -120,26 +131,27 @@ void Parser::initialization() {
 		charinit();
 	}
 
-	tabs--;
+	POP_TABS
 }
 
 void Parser::charid() {
-	printTabs(tabs);
+	printTabs();
 	cout << "Charid" << endl;
-	tabs++;
+	tabs.append("│  ");
+	tabs.append("   ");
 
 	match(Token::CHAR);
 	match(Token::COL);
 	match(Token::ID);
 
-	tabs--;
+	POP_TABS
 }
 
 
 void Parser::charinit() {
-	printTabs(tabs, false);
+	printTabs( false);
 	cout << "Charinit" << endl;
-	tabs++;
+	tabs.append("   ");
 
 	charid();
 	
@@ -160,13 +172,14 @@ void Parser::charinit() {
 		charinitlist();
 		match(Token::SCOL, false);
 	}	
-	tabs--;
+	POP_TABS
 }
 
 void Parser::charinitlist() {
-	printTabs(tabs);
+	printTabs();
 	cout << "CharInitList" << endl;
-	tabs++;
+	tabs.append("│  ");
+	tabs.append("   ");
 
 // includes contidinit
 	if (currentToken->token == Token::COM) {
@@ -189,26 +202,27 @@ void Parser::charinitlist() {
 		}
 	}
 
-	tabs--;
+	POP_TABS
 }
 
 void Parser::intid() {
-	printTabs(tabs);
+	printTabs();
 	cout << "Intid" << endl;
-	tabs++;
+	tabs.append("│  ");
+	tabs.append("   ");
 	// includes intid
 	match(Token::INT); 
 	match(Token::COL);
 	match(Token::ID);
 	
-	tabs--;
+	POP_TABS
 }
 
 
 void Parser::intinit() {
-	printTabs(tabs, false);
+	printTabs( false);
 	cout << "Intinit" << endl;
-	tabs++;
+	tabs.append("   ");
 
 	intid();
 
@@ -229,13 +243,14 @@ void Parser::intinit() {
 		match(Token::SCOL, false);
 	}	
 
-	tabs--;
+	POP_TABS
 }
 
 void Parser::intinitlist() {
-	printTabs(tabs);
+	printTabs();
 	cout << "IntInitList" << endl;
-	tabs++;
+	tabs.append("│  ");
+	tabs.append("   ");
 
 	// includes contidinit
 	if (currentToken->token == Token::COM) {
@@ -258,25 +273,25 @@ void Parser::intinitlist() {
 		}
 	}
 
-	tabs--;
+	POP_TABS
 }
 
 void Parser::input() {
-	printTabs(tabs);
+	printTabs(false);
 	cout << "Input" <<endl;
-	tabs++;
+	tabs.append("   ");
 
 	match(Token::INPUT);
 	match(Token::IN);
 	match(Token::ID);
 	match(Token::SCOL, false);
-	tabs--;
+	POP_TABS
 }
 
 void Parser::funcs() {
-	printTabs(tabs);
+	printTabs(false);
 	cout << "Funcs" << endl;
-	tabs++;
+	tabs.append("   ");
 
 	if (currentToken->token == Token::PRINT) {
 		match(Token::PRINT);
@@ -293,13 +308,14 @@ void Parser::funcs() {
 		match(Token::SCOL, false);
 	}
 
-	tabs--;
+	POP_TABS
 }
 
 void Parser::params() {
-	printTabs(tabs);
+	printTabs();
 	cout << "Params" << endl;
-	tabs++;
+	tabs.append("│  ");
+	tabs.append("   ");
 
 	if (currentToken->token == Token::ID) {
 		match(Token::ID, false);
@@ -317,38 +333,41 @@ void Parser::params() {
 		expr();
 	}
 
-	tabs--;
+	POP_TABS
 }
 
 void Parser::ifcmd() {
-	printTabs(tabs);
+	printTabs();
 	cout << "IF" << endl;
-	tabs++;
+	tabs.append("│  ");
+	tabs.append("   ");
 
 	match(Token::IF);
 	comparison();
 	docmd();
 	branch();
 
-	tabs--;
+	POP_TABS
 }
 
 void Parser::comparison() {
-	printTabs(tabs);
+	printTabs();
 	cout << "Comparison" << endl;
-	tabs++;
+	tabs.append("│  ");
+	tabs.append("   ");
 
 	expr();
 	RO();
 	expr();
 
-	tabs--;
+	POP_TABS
 }
 
 void Parser::RO () {
-	printTabs(tabs);
+	printTabs();
 	cout << "RelationalOp" << endl;
-	tabs++;
+	tabs.append("│  ");
+	tabs.append("   ");
 
 	if (currentToken->token == Token::LT) {
 		match(Token::LT);
@@ -369,26 +388,28 @@ void Parser::RO () {
 		match(Token::EQ);
 	}
 
-	tabs--;
+	POP_TABS
 }
 
 void Parser::docmd () {
-	printTabs(tabs);
+	printTabs();
 	cout << "DO" << endl;
-	tabs++;
+	tabs.append("│  ");
+	tabs.append("   ");
 
 	match(Token::COL);
 	match(Token::FBO);
 	statement();
 	match(Token::FBC, false);
 
-	tabs--;
+	POP_TABS
 }
 
 void Parser::branch() {
-	printTabs(tabs);
+	printTabs();
 	cout << "BRANCH" << endl;
-	tabs++;
+	tabs.append("│  ");
+	tabs.append("   ");
 
 	if (currentToken->token == Token::ELSE) {
 		match(Token::ELSE);
@@ -401,48 +422,51 @@ void Parser::branch() {
 		branch();
 	}
 	
-	tabs--;
+	POP_TABS
 }
 
 void Parser::whilecmd() {
-	printTabs(tabs);
+	printTabs();
 	cout << "WHILE" << endl;
-	tabs++;
+	tabs.append("│  ");
+	tabs.append("   ");
 
 	match(Token::WHILE);
 	comparison();
 	docmd();
 
-	tabs--;
+	POP_TABS
 }
 
 void Parser::expr() {
-	printTabs(tabs);
+	printTabs();
 	cout << "Expression" << endl;
-	tabs++;
+	tabs.append("│  ");
+	tabs.append("   ");
 
 
 	T();
 	R();
 
-	tabs--;
+	POP_TABS
 }
 
 void Parser::T() {
-	printTabs(tabs);
+	printTabs();
 	cout << "Term" << endl;
-	tabs++;
+	tabs.append("│  ");
+	tabs.append("   ");
 
 	F(); 
 	Rprime();
 
-	tabs--;
+	POP_TABS
 }
 
 void Parser::R() {
-	printTabs(tabs, false);
+	printTabs( false);
 	cout << "Residual Term" << endl;
-	tabs++;
+	tabs.append("   ");
 
 	if (currentToken->token == Token::ADD) {
 		match(Token::ADD);
@@ -455,13 +479,13 @@ void Parser::R() {
 		R();
 	}
 	
-	tabs--;
+	POP_TABS
 }
 
 void Parser::Rprime() {
-	printTabs(tabs, false);
+	printTabs( false);
 	cout << "Residual \'" << endl;
-	tabs++;
+	tabs.append("   ");
 
 	if (currentToken->token == Token::MUL) {
 		match(Token::MUL);
@@ -474,13 +498,14 @@ void Parser::Rprime() {
 		Rprime();
 	}
 		
-	tabs--;
+	POP_TABS
 }
 
 void Parser::F() {
-	printTabs(tabs);
+	printTabs();
 	cout << "Factor" << endl;
-	tabs++;
+	tabs.append("│  ");
+	tabs.append("   ");
 
 	if (currentToken->token == Token::ID) {
 		currentToken++;
@@ -511,18 +536,18 @@ void Parser::F() {
 		match(Token::PC, false);
 	}
 
-	tabs--;
+	POP_TABS
 }
 
 void Parser::assignment() {
-	printTabs(tabs);
+	printTabs(false);
 	cout << "Assignment" << endl;
-	tabs++;
+	tabs.append("   ");
 
 	match(Token::ID);
 	match(Token::AS);
 	expr();
 	match(Token::SCOL, false);
 
-	tabs--;
+	POP_TABS
 }
