@@ -1,5 +1,6 @@
 #include "../utils/token.h"
 #include "../utils/pair.h"
+
 #include <vector>
 #include <iostream>
 #include <map>
@@ -18,7 +19,7 @@ public:
 	Parser(vector<Pair>);
 	void PrintDataTypeTable();
 	void Parse();
-	void match(Token, bool);
+	void match(Token);
 
 	void statement();
 	void input();

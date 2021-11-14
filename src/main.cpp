@@ -1,5 +1,6 @@
 #include "./lexer/lexer.h"
 #include "./parser/parser.h"
+#include "./utils/tokenMap.h"
 #include <iostream>
 
 using namespace std;
