@@ -1,10 +1,14 @@
 #include "parser.h"
 #include "../utils/tokenMap.h"
+#include <string>
 
-int tabs = 0;
+string CONT_BAR = "│  ";
+string TAB_SPACE = "   ";
+static string prefix;
 
-void printTabs(int tabs) {
-	for (int i = 0; i < tabs; i++) { cout << "    "; }
+void printTabs(bool continued = true) {
+	cout<<prefix;
+	cout << (continued ?  "├── " : "└── ");
 }
 
 Parser::Parser(vector<Pair> _TokenStream) {
@@ -37,9 +41,9 @@ void Parser::Parse() {
 }
 
 
-void Parser::match(Token symbol) {
+void Parser::match(Token symbol, bool continued = true) {
 	if (symbol == this->currentToken->token) {
-		printTabs(tabs);
+		printTabs(continued);
 		if (currentToken->token == Token::ID) {
 			cout << currentToken->lexeme << endl;
 		}
@@ -56,52 +60,70 @@ void Parser::match(Token symbol) {
 void Parser::statement() {
 	if (currentToken != tokenStream.end()) {
 		
-		printTabs(tabs++);
+		printTabs();
 		cout << "Statement" << endl;
+		prefix.append(CONT_BAR);
+		prefix.append(TAB_SPACE);
 
 		if (currentToken->token == Token::INT || currentToken->token == Token::CHAR) {
-			initialization(); statement();
+			initialization();
+			prefix.erase(prefix.end()-8, prefix.end());
+			statement();
 		}
 		else if (currentToken->token == Token::INPUT) { 
-			input(); statement();
+			input(); 
+			prefix.erase(prefix.end()-8, prefix.end()); 
+			statement();
 		}
 		else if (currentToken->token == Token::PRINT || currentToken->token == Token::PRINTLN) {
-			funcs(); statement();
+			funcs(); 
+			prefix.erase(prefix.end()-8, prefix.end()); 
+			statement();
 		}
 		else if (currentToken->token == Token::IF) {
-			ifcmd(); statement();
+			ifcmd(); 
+			prefix.erase(prefix.end()-8, prefix.end()); 
+			statement();
 		}
 		else if (currentToken->token == Token::WHILE) {
-			whilecmd(); statement();
+			whilecmd(); 
+			prefix.erase(prefix.end()-8, prefix.end()); 
+			statement();
 		}
 		else if (currentToken->token == Token::ID) {
-			match(Token::ID);
+			currentToken++;
 			if (currentToken->token == Token::AS) {
 				currentToken--;
 				assignment(); 
+				prefix.erase(prefix.end()-8, prefix.end());
 				statement();
 			}
 			else {
 				currentToken--;
 				expr();
-				match(Token::SCOL);
+				match(Token::SCOL, false);
+				prefix.erase(prefix.end()-8, prefix.end());
 				statement();
 			}
 		}
 		else if (currentToken->token == Token::SLC || currentToken->token == Token::MLC) {
-			currentToken++; statement();
+			currentToken++; 
+			printTabs( false);
+			cout<<"Comment Ignored"<<endl;
+			prefix.erase(prefix.end()-8, prefix.end());
+			statement();
 		}
 		else {
-			tabs--;
+			//POP_PREFIX
 		}
 	}
 	else {}
 }
 
 void Parser::initialization() {
-	printTabs(tabs++);
+	printTabs( false);
 	cout << "Initialization" << endl;
-
+	prefix.append(TAB_SPACE);
 	if (currentToken->token == Token::INT) {
 		intinit();
 	}
@@ -109,17 +131,30 @@ void Parser::initialization() {
 		charinit();
 	}
 
-	tabs--;
+	prefix.erase(prefix.end()-3, prefix.end());
 }
 
-void Parser::charinit() {
-	printTabs(tabs++);
-	cout << "Charinit" << endl;
+void Parser::charid() {
+	printTabs();
+	cout << "Charid" << endl;
+	prefix.append(CONT_BAR);
+	prefix.append(TAB_SPACE);
 
-	// includes charid
 	match(Token::CHAR);
 	match(Token::COL);
-	match(Token::ID);
+	match(Token::ID, false);
+
+	prefix.erase(prefix.end()-8, prefix.end());
+}
+
+
+void Parser::charinit() {
+	printTabs( false);
+	cout << "Charinit" << endl;
+	prefix.append(TAB_SPACE);
+
+	charid();
+	
 	currentToken--;
 	if (datatypeTable.find(currentToken->lexeme) == datatypeTable.end()) {
 		datatypeTable[currentToken->lexeme] = Token::CHAR;
@@ -131,24 +166,40 @@ void Parser::charinit() {
 		match(Token::AS);
 		expr();
 		charinitlist();
-		match(Token::SCOL);
+		match(Token::SCOL, false);
 	}
 	else {
 		charinitlist();
-		match(Token::SCOL);
+		match(Token::SCOL, false);
 	}	
-	tabs--;
+	prefix.erase(prefix.end()-3, prefix.end());
 }
 
 void Parser::charinitlist() {
-	printTabs(tabs++);
+	if (currentToken->token == Token::COM || currentToken->token == Token::SCOL) {
+		printTabs();
+	}
+	else {
+		printTabs(false);
+	}
 	cout << "CharInitList" << endl;
+	prefix.append(CONT_BAR);
+	prefix.append(TAB_SPACE);
 
 // includes contidinit
 	if (currentToken->token == Token::COM) {
 		match(Token::COM);
-		match(Token::ID);
 		
+		currentToken++;
+		if (currentToken->token == Token::AS) {
+			currentToken--;
+			match(Token::ID);
+		}
+		else {
+			currentToken--;
+			match(Token::ID, false);
+		}
+
 		currentToken--;
 		if (datatypeTable.find(currentToken->lexeme) == datatypeTable.end()) {
 			datatypeTable[currentToken->lexeme] = Token::CHAR;
@@ -164,18 +215,29 @@ void Parser::charinitlist() {
 			charinitlist();
 		}
 	}
-
-	tabs--;
+	prefix.erase(prefix.end()-8, prefix.end());
 }
 
-void Parser::intinit() {
-	printTabs(tabs++);
-	cout << "Intinit" << endl;
-
+void Parser::intid() {
+	printTabs();
+	cout << "Intid" << endl;
+	prefix.append(CONT_BAR);
+	prefix.append(TAB_SPACE);
 	// includes intid
 	match(Token::INT); 
 	match(Token::COL);
-	match(Token::ID);
+	match(Token::ID, false);
+	
+	prefix.erase(prefix.end()-8, prefix.end());
+}
+
+
+void Parser::intinit() {
+	printTabs(false);
+	cout << "Intinit" << endl;
+	prefix.append(TAB_SPACE);
+
+	intid();
 
 	currentToken--;
 	if (datatypeTable.find(currentToken->lexeme) == datatypeTable.end()) {
@@ -183,29 +245,43 @@ void Parser::intinit() {
 	}
 	currentToken++;
 
-	// intinit part below
 	if (currentToken->token == Token::AS) {
 		match(Token::AS);
 		expr();
 		intinitlist();
-		match(Token::SCOL);
+		match(Token::SCOL, false);
 	}
 	else {
 		intinitlist();
-		match(Token::SCOL);
+		match(Token::SCOL, false);
 	}	
 
-	tabs--;
+	prefix.erase(prefix.end()-3, prefix.end());
 }
 
 void Parser::intinitlist() {
-	printTabs(tabs++);
+	if (currentToken->token == Token::COM || currentToken->token == Token::SCOL) {
+		printTabs();
+	}
+	else {
+		printTabs(false);
+	}
 	cout << "IntInitList" << endl;
+	prefix.append(CONT_BAR);
+	prefix.append(TAB_SPACE);
 
 	// includes contidinit
 	if (currentToken->token == Token::COM) {
 		match(Token::COM);
-		match(Token::ID);
+		currentToken++;
+		if (currentToken->token == Token::AS) {
+			currentToken--;
+			match(Token::ID);
+		}
+		else {
+			currentToken--;
+			match(Token::ID, false);
+		}
 
 		currentToken--;
 		if (datatypeTable.find(currentToken->lexeme) == datatypeTable.end()) {
@@ -223,101 +299,102 @@ void Parser::intinitlist() {
 		}
 	}
 
-	tabs--;
+	prefix.erase(prefix.end()-8, prefix.end());
 }
 
 void Parser::input() {
-	printTabs(tabs++);
-	cout << "Input" <<endl ;
+	printTabs(false);
+	cout << "Input" <<endl;
+	prefix.append(TAB_SPACE);
+
 	match(Token::INPUT);
 	match(Token::IN);
 	match(Token::ID);
-	match(Token::SCOL);
-	tabs--;
+	match(Token::SCOL, false);
+
+	prefix.erase(prefix.end()-3, prefix.end());
 }
 
 void Parser::funcs() {
-	printTabs(tabs++);
+	printTabs(false);
 	cout << "Funcs" << endl;
+	prefix.append(TAB_SPACE);
 
 	if (currentToken->token == Token::PRINT) {
 		match(Token::PRINT);
 		match(Token::PO);
 		params();
 		match(Token::PC);
-		match(Token::SCOL);
+		match(Token::SCOL, false);
 	}
 	else if (currentToken->token == Token::PRINTLN) {
 		match(Token::PRINTLN);
 		match(Token::PO);
 		params();
 		match(Token::PC);
-		match(Token::SCOL);
+		match(Token::SCOL, false);
 	}
 
-	tabs--;
+	prefix.erase(prefix.end()-3, prefix.end());
 }
 
 void Parser::params() {
-	printTabs(tabs++);
+	printTabs();
 	cout << "Params" << endl;
+	prefix.append(CONT_BAR);
+	prefix.append(TAB_SPACE);
 
 	if (currentToken->token == Token::ID) {
-		match(Token::ID);
+		match(Token::ID, false);
 	}
 	else if (currentToken->token == Token::STR) {
-		match(Token::STR);
+		match(Token::STR, false);
 	}
 	else if (currentToken->token == Token::LIT) {
-		match(Token::LIT);
+		match(Token::LIT, false);
 	}
 	else if (currentToken->token == Token::NUM) {
-		match(Token::NUM);
+		match(Token::NUM, false);
 	}
 	else {
 		expr();
 	}
 
-	tabs--;
+	prefix.erase(prefix.end()-8, prefix.end());
 }
 
 void Parser::ifcmd() {
-	printTabs(tabs++);
+	printTabs();
 	cout << "IF" << endl;
+	prefix.append(CONT_BAR);
+	prefix.append(TAB_SPACE);
 
 	match(Token::IF);
 	comparison();
 	docmd();
 	branch();
 
-	tabs--;
+	prefix.erase(prefix.end()-8, prefix.end());
 }
 
 void Parser::comparison() {
-	printTabs(tabs++);
+	printTabs();
 	cout << "Comparison" << endl;
+	prefix.append(CONT_BAR);
+	prefix.append(TAB_SPACE);
 
-	if (currentToken->token == Token::PO) {
-		match(Token::PO);
-		expr();
-		match(Token::PC);
-		RO();
-		match(Token::PO);
-		expr();
-		match(Token::PC);
-	}
-	else {
-		match(Token::ID);
-		RO();
-		match(Token::ID);
-	}
+	expr();
+	RO();
+	expr();
 
-	tabs--;
+	prefix.erase(prefix.end()-8, prefix.end());
 }
 
 void Parser::RO () {
-	printTabs(tabs++);
-	cout << "RO" << endl;
+	printTabs();
+	cout << "RelationalOp" << endl;
+	prefix.append(CONT_BAR);
+	prefix.append(TAB_SPACE);
 
 	if (currentToken->token == Token::LT) {
 		match(Token::LT);
@@ -338,24 +415,28 @@ void Parser::RO () {
 		match(Token::EQ);
 	}
 
-	tabs--;
+	prefix.erase(prefix.end()-8, prefix.end());
 }
 
 void Parser::docmd () {
-	printTabs(tabs++);
+	printTabs();
 	cout << "DO" << endl;
+	prefix.append(CONT_BAR);
+	prefix.append(TAB_SPACE);
 
 	match(Token::COL);
 	match(Token::FBO);
 	statement();
-	match(Token::FBC);
+	match(Token::FBC, false);
 
-	tabs--;
+	prefix.erase(prefix.end()-8, prefix.end());
 }
 
 void Parser::branch() {
-	printTabs(tabs++);
+	printTabs();
 	cout << "BRANCH" << endl;
+	prefix.append(CONT_BAR);
+	prefix.append(TAB_SPACE);
 
 	if (currentToken->token == Token::ELSE) {
 		match(Token::ELSE);
@@ -368,43 +449,51 @@ void Parser::branch() {
 		branch();
 	}
 	
-	tabs--;
+	prefix.erase(prefix.end()-8, prefix.end());
 }
 
 void Parser::whilecmd() {
-	printTabs(tabs++);
+	printTabs();
 	cout << "WHILE" << endl;
+	prefix.append(CONT_BAR);
+	prefix.append(TAB_SPACE);
 
 	match(Token::WHILE);
 	comparison();
 	docmd();
 
-	tabs--;
+	prefix.erase(prefix.end()-8, prefix.end());
 }
 
 void Parser::expr() {
-	printTabs(tabs++);
+	printTabs();
 	cout << "Expression" << endl;
+	prefix.append(CONT_BAR);
+	prefix.append(TAB_SPACE);
+
 
 	T();
 	R();
 
-	tabs--;
+	prefix.erase(prefix.end()-8, prefix.end());
 }
 
 void Parser::T() {
-	printTabs(tabs++);
+	printTabs();
 	cout << "Term" << endl;
+	prefix.append(CONT_BAR);
+	prefix.append(TAB_SPACE);
 
 	F(); 
 	Rprime();
 
-	tabs--;
+	prefix.erase(prefix.end()-8, prefix.end());
 }
 
 void Parser::R() {
-	printTabs(tabs++);
+	printTabs( false);
 	cout << "Residual Term" << endl;
+	prefix.append(TAB_SPACE);
 
 	if (currentToken->token == Token::ADD) {
 		match(Token::ADD);
@@ -417,12 +506,13 @@ void Parser::R() {
 		R();
 	}
 	
-	tabs--;
+	prefix.erase(prefix.end()-3, prefix.end());
 }
 
 void Parser::Rprime() {
-	printTabs(tabs++);
+	printTabs( false);
 	cout << "Residual \'" << endl;
+	prefix.append(TAB_SPACE);
 
 	if (currentToken->token == Token::MUL) {
 		match(Token::MUL);
@@ -435,45 +525,56 @@ void Parser::Rprime() {
 		Rprime();
 	}
 		
-	tabs--;
+	prefix.erase(prefix.end()-3, prefix.end());
 }
 
 void Parser::F() {
-	printTabs(tabs++);
+	printTabs();
 	cout << "Factor" << endl;
+	prefix.append(CONT_BAR);
+	prefix.append(TAB_SPACE);
 
 	if (currentToken->token == Token::ID) {
-		match(Token::ID);
+		currentToken++;
 		if (currentToken->token == Token::INC) {
-			match(Token::INC);
+			currentToken--;
+			match(Token::ID);
+			match(Token::INC, false);
 		}
 		else if (currentToken->token == Token::DEC) {
-			match(Token::DEC);
+			currentToken--;
+			match(Token::ID);
+			match(Token::DEC, false);
+		}
+		else {
+			currentToken--;
+			match(Token::ID, false);
 		}
 	}
 	else if (currentToken->token == Token::NUM) {
-		match(Token::NUM);
+		match(Token::NUM, false);
 	}
 	else if (currentToken->token == Token::LIT) {
-		match(Token::LIT);
+		match(Token::LIT, false);
 	}
 	else if (currentToken->token == Token::PO) {
 		match(Token::PO);
 		expr();
-		match(Token::PC);
+		match(Token::PC, false);
 	}
 
-	tabs--;
+	prefix.erase(prefix.end()-8, prefix.end());
 }
 
 void Parser::assignment() {
-	printTabs(tabs++);
+	printTabs(false);
 	cout << "Assignment" << endl;
+	prefix.append(TAB_SPACE);
 
 	match(Token::ID);
 	match(Token::AS);
 	expr();
-	match(Token::SCOL);
+	match(Token::SCOL, false);
 
-	tabs--;
+	prefix.erase(prefix.end()-3, prefix.end());
 }
