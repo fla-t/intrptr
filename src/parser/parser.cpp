@@ -1,6 +1,7 @@
 #include "parser.h"
 #include "../utils/tokenMap.h"
 #include <string>
+#include <sstream>
 
 #define POP_PREFIX_8 prefix.erase(prefix.end()-9, prefix.end());
 #define POP_PREFIX_3 prefix.erase(prefix.end()-4, prefix.end());
@@ -56,7 +57,9 @@ void Parser::match(Token symbol, bool continued = true) {
 
 	}
 	else {
-		throw std::runtime_error("Bad Token");
+		stringstream error;
+		error << "Bad token, Missing: " << token_to_symbol[currentToken->token] << endl; 
+		throw std::runtime_error(error.str().c_str());
 	}
 }
 

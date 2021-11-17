@@ -29,4 +29,3 @@ while c < num:
 	b = temp;
 	println(temp);
 	c++;
-}
