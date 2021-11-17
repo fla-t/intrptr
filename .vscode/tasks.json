@@ -4,16 +4,15 @@
         {
             "type": "cppbuild",
             "label": "C/C++: g++.exe build active file",
-            "command": "C:\\Program Files (x86)\\mingw-w64\\i686-8.1.0-posix-dwarf-rt_v6-rev0\\mingw32\\bin\\g++.exe",
+            "command": "g++",
             "args": [
                 "-fdiagnostics-color=always",
                 "-g",
                 "${fileDirname}\\*.cpp",
                 "${fileDirname}\\lexer\\*.cpp",
                 "${fileDirname}\\parser\\*.cpp",
-                // "${fileDirname}\\utils\\*.cpp",
                 "-o",
-                "${workspaceFolder}\\build\\${fileBasenameNoExtension}.exe"
+                "${workspaceFolder}\\bin\\windowsExecutable"
             ],
             "options": {
                 "cwd": "${fileDirname}"
@@ -23,7 +22,7 @@
                 "kind": "build",
                 "isDefault": true
             },
-            "detail": "compiler: \"C:\\Program Files (x86)\\mingw-w64\\i686-8.1.0-posix-dwarf-rt_v6-rev0\\mingw32\\bin\\g++.exe\""
+            "detail": "compiler: \"g++.exe\""
         }
     ]
 }

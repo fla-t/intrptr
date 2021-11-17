@@ -2,8 +2,11 @@
 #include "../utils/tokenMap.h"
 #include <string>
 
+#define POP_PREFIX_8 prefix.erase(prefix.end()-9, prefix.end());
+#define POP_PREFIX_3 prefix.erase(prefix.end()-4, prefix.end());
+
 string CONT_BAR = "│  ";
-string TAB_SPACE = "   ";
+string TAB_SPACE = "    ";
 static string prefix;
 
 void printTabs(bool continued = true) {
@@ -67,27 +70,27 @@ void Parser::statement() {
 
 		if (currentToken->token == Token::INT || currentToken->token == Token::CHAR) {
 			initialization();
-			prefix.erase(prefix.end()-8, prefix.end());
+			POP_PREFIX_8
 			statement();
 		}
 		else if (currentToken->token == Token::INPUT) { 
 			input(); 
-			prefix.erase(prefix.end()-8, prefix.end()); 
+			POP_PREFIX_8 
 			statement();
 		}
 		else if (currentToken->token == Token::PRINT || currentToken->token == Token::PRINTLN) {
 			funcs(); 
-			prefix.erase(prefix.end()-8, prefix.end()); 
+			POP_PREFIX_8 
 			statement();
 		}
 		else if (currentToken->token == Token::IF) {
 			ifcmd(); 
-			prefix.erase(prefix.end()-8, prefix.end()); 
+			POP_PREFIX_8 
 			statement();
 		}
 		else if (currentToken->token == Token::WHILE) {
 			whilecmd(); 
-			prefix.erase(prefix.end()-8, prefix.end()); 
+			POP_PREFIX_8 
 			statement();
 		}
 		else if (currentToken->token == Token::ID) {
@@ -95,14 +98,14 @@ void Parser::statement() {
 			if (currentToken->token == Token::AS) {
 				currentToken--;
 				assignment(); 
-				prefix.erase(prefix.end()-8, prefix.end());
+				POP_PREFIX_8
 				statement();
 			}
 			else {
 				currentToken--;
 				expr();
 				match(Token::SCOL, false);
-				prefix.erase(prefix.end()-8, prefix.end());
+				POP_PREFIX_8
 				statement();
 			}
 		}
@@ -110,7 +113,7 @@ void Parser::statement() {
 			currentToken++; 
 			printTabs( false);
 			cout<<"Comment Ignored"<<endl;
-			prefix.erase(prefix.end()-8, prefix.end());
+			POP_PREFIX_8
 			statement();
 		}
 		else {
@@ -121,7 +124,7 @@ void Parser::statement() {
 }
 
 void Parser::initialization() {
-	printTabs( false);
+	printTabs(false);
 	cout << "Initialization" << endl;
 	prefix.append(TAB_SPACE);
 	if (currentToken->token == Token::INT) {
@@ -131,7 +134,7 @@ void Parser::initialization() {
 		charinit();
 	}
 
-	prefix.erase(prefix.end()-3, prefix.end());
+	POP_PREFIX_3
 }
 
 void Parser::charid() {
@@ -144,7 +147,7 @@ void Parser::charid() {
 	match(Token::COL);
 	match(Token::ID, false);
 
-	prefix.erase(prefix.end()-8, prefix.end());
+	POP_PREFIX_8
 }
 
 
@@ -172,7 +175,7 @@ void Parser::charinit() {
 		charinitlist();
 		match(Token::SCOL, false);
 	}	
-	prefix.erase(prefix.end()-3, prefix.end());
+	POP_PREFIX_3
 }
 
 void Parser::charinitlist() {
@@ -215,7 +218,7 @@ void Parser::charinitlist() {
 			charinitlist();
 		}
 	}
-	prefix.erase(prefix.end()-8, prefix.end());
+	POP_PREFIX_8
 }
 
 void Parser::intid() {
@@ -228,7 +231,7 @@ void Parser::intid() {
 	match(Token::COL);
 	match(Token::ID, false);
 	
-	prefix.erase(prefix.end()-8, prefix.end());
+	POP_PREFIX_8
 }
 
 
@@ -256,7 +259,7 @@ void Parser::intinit() {
 		match(Token::SCOL, false);
 	}	
 
-	prefix.erase(prefix.end()-3, prefix.end());
+	POP_PREFIX_3
 }
 
 void Parser::intinitlist() {
@@ -299,7 +302,7 @@ void Parser::intinitlist() {
 		}
 	}
 
-	prefix.erase(prefix.end()-8, prefix.end());
+	POP_PREFIX_8
 }
 
 void Parser::input() {
@@ -312,7 +315,7 @@ void Parser::input() {
 	match(Token::ID);
 	match(Token::SCOL, false);
 
-	prefix.erase(prefix.end()-3, prefix.end());
+	POP_PREFIX_3
 }
 
 void Parser::funcs() {
@@ -335,7 +338,7 @@ void Parser::funcs() {
 		match(Token::SCOL, false);
 	}
 
-	prefix.erase(prefix.end()-3, prefix.end());
+	POP_PREFIX_3
 }
 
 void Parser::params() {
@@ -360,7 +363,7 @@ void Parser::params() {
 		expr();
 	}
 
-	prefix.erase(prefix.end()-8, prefix.end());
+	POP_PREFIX_8
 }
 
 void Parser::ifcmd() {
@@ -374,7 +377,7 @@ void Parser::ifcmd() {
 	docmd();
 	branch();
 
-	prefix.erase(prefix.end()-8, prefix.end());
+	POP_PREFIX_8
 }
 
 void Parser::comparison() {
@@ -387,7 +390,7 @@ void Parser::comparison() {
 	RO();
 	expr();
 
-	prefix.erase(prefix.end()-8, prefix.end());
+	POP_PREFIX_8
 }
 
 void Parser::RO () {
@@ -415,13 +418,12 @@ void Parser::RO () {
 		match(Token::EQ);
 	}
 
-	prefix.erase(prefix.end()-8, prefix.end());
+	POP_PREFIX_8
 }
 
 void Parser::docmd () {
-	printTabs();
+	printTabs(false);
 	cout << "DO" << endl;
-	prefix.append(CONT_BAR);
 	prefix.append(TAB_SPACE);
 
 	match(Token::COL);
@@ -429,7 +431,7 @@ void Parser::docmd () {
 	statement();
 	match(Token::FBC, false);
 
-	prefix.erase(prefix.end()-8, prefix.end());
+	POP_PREFIX_3
 }
 
 void Parser::branch() {
@@ -449,20 +451,19 @@ void Parser::branch() {
 		branch();
 	}
 	
-	prefix.erase(prefix.end()-8, prefix.end());
+	POP_PREFIX_8
 }
 
 void Parser::whilecmd() {
-	printTabs();
+	printTabs(false);
 	cout << "WHILE" << endl;
-	prefix.append(CONT_BAR);
 	prefix.append(TAB_SPACE);
 
 	match(Token::WHILE);
 	comparison();
 	docmd();
 
-	prefix.erase(prefix.end()-8, prefix.end());
+	POP_PREFIX_3
 }
 
 void Parser::expr() {
@@ -475,7 +476,7 @@ void Parser::expr() {
 	T();
 	R();
 
-	prefix.erase(prefix.end()-8, prefix.end());
+	POP_PREFIX_8
 }
 
 void Parser::T() {
@@ -487,7 +488,7 @@ void Parser::T() {
 	F(); 
 	Rprime();
 
-	prefix.erase(prefix.end()-8, prefix.end());
+	POP_PREFIX_8
 }
 
 void Parser::R() {
@@ -506,7 +507,7 @@ void Parser::R() {
 		R();
 	}
 	
-	prefix.erase(prefix.end()-3, prefix.end());
+	POP_PREFIX_3
 }
 
 void Parser::Rprime() {
@@ -525,7 +526,7 @@ void Parser::Rprime() {
 		Rprime();
 	}
 		
-	prefix.erase(prefix.end()-3, prefix.end());
+	POP_PREFIX_3
 }
 
 void Parser::F() {
@@ -563,7 +564,7 @@ void Parser::F() {
 		match(Token::PC, false);
 	}
 
-	prefix.erase(prefix.end()-8, prefix.end());
+	POP_PREFIX_8
 }
 
 void Parser::assignment() {
@@ -576,5 +577,5 @@ void Parser::assignment() {
 	expr();
 	match(Token::SCOL, false);
 
-	prefix.erase(prefix.end()-3, prefix.end());
+	POP_PREFIX_3
 }

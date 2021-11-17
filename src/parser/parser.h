@@ -18,7 +18,7 @@ public:
 	Parser(vector<Pair>);
 	void PrintDataTypeTable();
 	void Parse();
-	void match(Token);
+	void match(Token, bool);
 
 	void statement();
 	void input();
@@ -43,9 +43,11 @@ public:
 
 	void initialization();
 	
+	void charid();
 	void charinit();
 	void charinitlist();
 
+	void intid();
 	void intinit();
 	void intinitlist();
 

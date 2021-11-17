@@ -1,0 +1,221 @@
+file parsed successfully !!
+├── Statement
+│     └── Initialization
+│        └── Intinit
+│           ├── Intid
+│           │     ├── int
+│           │     ├── :
+│           │     └── num
+│           ├── IntInitList
+│           └── ;
+├── Statement
+│     └── Initialization
+│        └── Charinit
+│           ├── Charid
+│           │     ├── char
+│           │     ├── :
+│           │     └── my_char
+│           ├── CharInitList
+│           └── ;
+├── Statement
+│     └── Comment Ignored
+├── Statement
+│     └── Assignment
+│        ├── my_char
+│        ├── =
+│        ├── Expression
+│        │     ├── Term
+│        │     │     ├── Factor
+│        │     │     │     └── char literal
+│        │     │     └── Residual '
+│        │     └── Residual Term
+│        └── ;
+├── Statement
+│     └── Funcs
+│        ├── print
+│        ├── (
+│        ├── Params
+│        │     └── string literal
+│        ├── )
+│        └── ;
+├── Statement
+│     └── Funcs
+│        ├── println
+│        ├── (
+│        ├── Params
+│        │     └── my_char
+│        ├── )
+│        └── ;
+├── Statement
+│     └── Comment Ignored
+├── Statement
+│     └── Funcs
+│        ├── println
+│        ├── (
+│        ├── Params
+│        │     └── string literal
+│        ├── )
+│        └── ;
+├── Statement
+│     └── Input
+│        ├── input
+│        ├── ->
+│        ├── num
+│        └── ;
+├── Statement
+│     └── Initialization
+│        └── Intinit
+│           ├── Intid
+│           │     ├── int
+│           │     ├── :
+│           │     └── a
+│           ├── =
+│           ├── Expression
+│           │     ├── Term
+│           │     │     ├── Factor
+│           │     │     │     └── number
+│           │     │     └── Residual '
+│           │     └── Residual Term
+│           ├── IntInitList
+│           │     ├── :
+│           │     ├── b
+│           │     ├── =
+│           │     ├── Expression
+│           │     │     ├── Term
+│           │     │     │     ├── Factor
+│           │     │     │     │     └── number
+│           │     │     │     └── Residual '
+│           │     │     └── Residual Term
+│           │     ├── IntInitList
+│           │     │     ├── :
+│           │     │     ├── c
+│           │     │     ├── =
+│           │     │     ├── Expression
+│           │     │     │     ├── Term
+│           │     │     │     │     ├── Factor
+│           │     │     │     │     │     └── number
+│           │     │     │     │     └── Residual '
+│           │     │     │     └── Residual Term
+│           │     │     ├── IntInitList
+│           └── ;
+├── Statement
+│     └── Funcs
+│        ├── println
+│        ├── (
+│        ├── Params
+│        │     └── string literal
+│        ├── )
+│        └── ;
+├── Statement
+│     └── Funcs
+│        ├── println
+│        ├── (
+│        ├── Params
+│        │     └── a
+│        ├── )
+│        └── ;
+├── Statement
+│     └── Funcs
+│        ├── println
+│        ├── (
+│        ├── Params
+│        │     └── b
+│        ├── )
+│        └── ;
+├── Statement
+│     ├── WHILE
+│        ├── while
+│        ├── Comparison
+│        │     ├── Expression
+│        │     │     ├── Term
+│        │     │     │     ├── Factor
+│        │     │     │     │     └── c
+│        │     │     │     └── Residual '
+│        │     │     └── Residual Term
+│        │     ├── RelationalOp
+│        │     │     ├── <
+│        │     ├── Expression
+│        │     │     ├── Term
+│        │     │     │     ├── Factor
+│        │     │     │     │     └── num
+│        │     │     │     └── Residual '
+│        │     │     └── Residual Term
+│        ├── DO
+│        │     ├── :
+│        │     ├── {
+│        │     ├── Statement
+│        │     │     └── Initialization
+│        │     │        └── Intinit
+│        │     │           ├── Intid
+│        │     │           │     ├── int
+│        │     │           │     ├── :
+│        │     │           │     └── temp
+│        │     │           ├── =
+│        │     │           ├── Expression
+│        │     │           │     ├── Term
+│        │     │           │     │     ├── Factor
+│        │     │           │     │     │     └── a
+│        │     │           │     │     └── Residual '
+│        │     │           │     └── Residual Term
+│        │     │           │        ├── +
+│        │     │           │        ├── Term
+│        │     │           │        │     ├── Factor
+│        │     │           │        │     │     └── b
+│        │     │           │        │     └── Residual '
+│        │     │           │        └── Residual Term
+│        │     │           ├── IntInitList
+│        │     │           └── ;
+│        │     ├── Statement
+│        │     │     └── Assignment
+│        │     │        ├── a
+│        │     │        ├── =
+│        │     │        ├── Expression
+│        │     │        │     ├── Term
+│        │     │        │     │     ├── Factor
+│        │     │        │     │     │     └── b
+│        │     │        │     │     └── Residual '
+│        │     │        │     └── Residual Term
+│        │     │        └── ;
+│        │     ├── Statement
+│        │     │     └── Assignment
+│        │     │        ├── b
+│        │     │        ├── =
+│        │     │        ├── Expression
+│        │     │        │     ├── Term
+│        │     │        │     │     ├── Factor
+│        │     │        │     │     │     └── temp
+│        │     │        │     │     └── Residual '
+│        │     │        │     └── Residual Term
+│        │     │        └── ;
+│        │     ├── Statement
+│        │     │     └── Funcs
+│        │     │        ├── println
+│        │     │        ├── (
+│        │     │        ├── Params
+│        │     │        │     └── temp
+│        │     │        ├── )
+│        │     │        └── ;
+│        │     ├── Statement
+│        │     │     ├── Expression
+│        │     │     │     ├── Term
+│        │     │     │     │     ├── Factor
+│        │     │     │     │     │     ├── c
+│        │     │     │     │     │     └── ++
+│        │     │     │     │     └── Residual '
+│        │     │     │     └── Residual Term
+│        │     │     └── ;
+│        │     ├── Statement
+│        │     │     └── }
+----------------------------------
+	Datatype Table
+
+ID Name		DataType
+
+a		int
+b		int
+c		int
+my_char		char
+num		int
+temp		int
+----------------------------------
+Everything parsed successfully!
