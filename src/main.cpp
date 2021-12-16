@@ -2,8 +2,8 @@
 #include "./parser/parser.h"
 #include <iostream>
 
-
 using namespace std;
+
 int main(int argc, char** argv) {
 	Lexer lex;
 	if (argc == 2) {

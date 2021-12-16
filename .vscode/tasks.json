@@ -8,11 +8,11 @@
             "args": [
                 "-fdiagnostics-color=always",
                 "-g",
-                "${fileDirname}\\*.cpp",
-                "${fileDirname}\\lexer\\*.cpp",
-                "${fileDirname}\\parser\\*.cpp",
+                "${fileDirname}/*.cpp",
+                "${fileDirname}/lexer/*.cpp",
+                "${fileDirname}/parser/*.cpp",
                 "-o",
-                "${workspaceFolder}\\bin\\windowsExecutable"
+                "${workspaceFolder}/bin/Executable"
             ],
             "options": {
                 "cwd": "${fileDirname}"

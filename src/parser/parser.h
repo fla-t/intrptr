@@ -1,5 +1,6 @@
 #include "../utils/token.h"
 #include "../utils/pair.h"
+#include "../utils/varStruct.h"
 #include <vector>
 #include <iostream>
 #include <map>
@@ -13,7 +14,8 @@ class Parser {
 	vector<Pair> tokenStream;
 	vector<Pair>::iterator currentToken;
 	map<string, Token> datatypeTable;
-
+	map<string, int> addressTable;
+	
 public:
 	Parser(vector<Pair>);
 	void PrintDataTypeTable();
