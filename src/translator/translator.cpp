@@ -23,7 +23,7 @@ Pair Translator::newTemp(Token x) {
 Translator::Translator(vector<Pair> _TokenStream) {
 	this->tokenStream = _TokenStream;
 	this->currentToken = this->tokenStream.begin();
-
+	this->tempCount = 0;
 	this->currentAddr = 0;
 }
 
@@ -130,14 +130,16 @@ Pair Translator::charid() {
 
 	if (datatypeTable.find(currentToken->lexeme) == datatypeTable.end()) {
 		datatypeTable[currentToken->lexeme] = Token::CHAR;
-		addressTable[currentToken->lexeme] = this->currentAddr;
-		this->currentAddr += bytesNeeded(currentToken->token);
+		addressTable[currentToken->lexeme] = currentAddr;
+		this->currentAddr += bytesNeeded(Token::CHAR);
 	}
 
-	Pair newpair = *currentToken;
+	Pair newPair;
+	newPair.token = currentToken->token;
+	newPair.lexeme = currentToken->lexeme;
 	currentToken++;
 
-	return newpair;
+	return newPair;
 }
 
 
@@ -151,7 +153,7 @@ Pair Translator::charinit() {
 		//translation
 		Pair expr_n = expr();
 		stringstream ss;
-		ss<<charid_n.lexeme<<" = "<<expr_n.lexeme;
+		ss << charid_n.lexeme <<" = "<<expr_n.lexeme;
 		this->translation.push_back(ss.str());
 		//end
 
@@ -185,9 +187,12 @@ Pair Translator::charinitlist() {
 		if (datatypeTable.find(currentToken->lexeme) == datatypeTable.end()) {
 			datatypeTable[currentToken->lexeme] = Token::CHAR;
 			addressTable[currentToken->lexeme] = this->currentAddr;
-			this->currentAddr += bytesNeeded(currentToken->token);
+			this->currentAddr += bytesNeeded(Token::CHAR);
 		}
-		Pair id = *currentToken;
+		
+		Pair newPair;
+		newPair.token = currentToken->token;
+		newPair.lexeme = currentToken->lexeme;
 		currentToken++;
 
 		if (currentToken->token == Token::AS) {
@@ -196,7 +201,7 @@ Pair Translator::charinitlist() {
 			
 			//sdt
 			stringstream ss;
-			ss<<id.lexeme<<" = "<<expr_n.lexeme;
+			ss<<newPair.lexeme<<" = "<<expr_n.lexeme;
 			this->translation.push_back(ss.str());
 
 			charinitlist();
@@ -216,11 +221,13 @@ Pair Translator::intid() {
 	currentToken--;
 	if (datatypeTable.find(currentToken->lexeme) == datatypeTable.end()) {
 		datatypeTable[currentToken->lexeme] = Token::INT;
-		addressTable[currentToken->lexeme] = this->currentAddr;
-		this->currentAddr += bytesNeeded(currentToken->token);
+		addressTable[currentToken->lexeme] = currentAddr;
+		this->currentAddr += bytesNeeded(Token::INT);
 	}
 
-	Pair newPair = *currentToken;
+	Pair newPair;
+	newPair.token = currentToken->token;
+	newPair.lexeme = currentToken->lexeme;
 	currentToken++;
 	
 	return newPair;
@@ -236,7 +243,7 @@ Pair Translator::intinit() {
 		
 		//sdt
 		stringstream ss;
-		ss << expr_n.lexeme <<" = "<< expr_n.lexeme;
+		ss << intid_n.lexeme <<" = "<< expr_n.lexeme;
 		this->translation.push_back(ss.str());
 
 		intinitlist();
@@ -263,11 +270,14 @@ void Translator::intinitlist() {
 		}
 
 		currentToken--;
-		Pair newPair = *currentToken;
+	
+		Pair newPair;
+		newPair.token = currentToken->token;
+		newPair.lexeme = currentToken->lexeme;
 		if (datatypeTable.find(currentToken->lexeme) == datatypeTable.end()) {
 			datatypeTable[currentToken->lexeme] = Token::INT;
-			addressTable[currentToken->lexeme] = this->currentAddr;
-			this->currentAddr += bytesNeeded(currentToken->token);
+			addressTable[currentToken->lexeme] = currentAddr;
+			this->currentAddr += bytesNeeded(Token::INT);
 		}
 		currentToken++;
 
@@ -291,13 +301,15 @@ void Translator::intinitlist() {
 void Translator::input() {
 	match(Token::INPUT);
 	match(Token::IN);
-	Pair newpair = *currentToken;
+	Pair newPair;
+	newPair.token = currentToken->token;
+	newPair.lexeme = currentToken->lexeme;
 	match(Token::ID);
 	match(Token::SCOL, false);
 
 	//sdt
 	stringstream ss;
-	ss << "IN" <<" "<< newpair.lexeme;
+	ss << "IN" <<" "<< newPair.lexeme;
 	this->translation.push_back(ss.str());
 }
 
@@ -311,7 +323,13 @@ void Translator::funcs() {
 		
 		//sdt
 		stringstream ss;
-		ss << "OUT " << param_n.lexeme ;
+		ss << "OUT ";
+		if (param_n.token == Token::STR) {
+			ss << "\""<< param_n.lexeme <<"\"";
+		}
+		else {
+			ss << param_n.lexeme;
+		}
 		this->translation.push_back(ss.str());
 		
 		match(Token::PC);
@@ -325,9 +343,17 @@ void Translator::funcs() {
 		
 		//sdt
 		stringstream ss;
-		ss << "OUT " << param_n.lexeme;
+		ss << "OUT ";
+		if (param_n.token == Token::STR) {
+			ss << "\""<< param_n.lexeme <<"\"";
+		}
+		else {
+			ss << param_n.lexeme;
+		}
 		this->translation.push_back(ss.str());
 		
+		ss.str("");
+
 		ss << "OUT \"\\n\"";
 		this->translation.push_back(ss.str());
 		
@@ -338,24 +364,32 @@ void Translator::funcs() {
 
 Pair Translator::params() {
 	if (currentToken->token == Token::ID) {
-		Pair newpair = *currentToken;	
+		Pair newPair;
+		newPair.token = currentToken->token;
+		newPair.lexeme = currentToken->lexeme;
 		match(Token::ID, false);
-		return newpair;
+		return newPair;
 	}
 	else if (currentToken->token == Token::STR) {
-		Pair newpair = *currentToken;
+		Pair newPair;
+		newPair.token = currentToken->token;
+		newPair.lexeme = currentToken->lexeme;
 		match(Token::STR, false);
-		return newpair;
+		return newPair;
 	}
 	else if (currentToken->token == Token::LIT) {
-		Pair newpair = *currentToken;	
+		Pair newPair;
+		newPair.token = currentToken->token;
+		newPair.lexeme = currentToken->lexeme;
 		match(Token::LIT, false);
-		return newpair;	
+		return newPair;	
 	}
 	else if (currentToken->token == Token::NUM) {
-		Pair newpair = *currentToken;
+		Pair newPair;
+		newPair.token = currentToken->token;
+		newPair.lexeme = currentToken->lexeme;
 		match(Token::NUM, false);
-		return newpair;
+		return newPair;
 	}
 	else {
 		Pair expr_n = expr();
@@ -382,7 +416,7 @@ void Translator::ifcmd() {
 	docmd();
 
 	ss.str("");
-	ss << "GOTO " <<;
+	ss << "GOTO ";
 	this->translation.push_back(ss.str());
 
 	int afterlastbranchgoto = this->translation.size() - 1;
@@ -405,34 +439,47 @@ string Translator::comparison() {
 
 Pair Translator::RO () {
 	if (currentToken->token == Token::LT) {
-		Pair newpair = *currentToken;
+		Pair newPair;
+		newPair.token = currentToken->token;
+		newPair.lexeme = currentToken->lexeme;
+		
 		match(Token::LT);
-		return newpair;
+		return newPair;
 	}
 	else if (currentToken->token == Token::LTE) {
-		Pair newpair = *currentToken;
+		Pair newPair;
+		newPair.token = currentToken->token;
+		newPair.lexeme = currentToken->lexeme;
 		match(Token::LTE);
-		return newpair;
+		return newPair;
 	}
 	else if (currentToken->token == Token::GT) {
-		Pair newpair = *currentToken;
+		Pair newPair;
+		newPair.token = currentToken->token;
+		newPair.lexeme = currentToken->lexeme;
 		match(Token::GT);
-		return newpair;
+		return newPair;
 	}
 	else if (currentToken->token == Token::GTE) {
-		Pair newpair = *currentToken;
+		Pair newPair;
+		newPair.token = currentToken->token;
+		newPair.lexeme = currentToken->lexeme;
 		match(Token::GTE);
-		return newpair;
+		return newPair;
 	}
 	else if (currentToken->token == Token::NEQ) {
-		Pair newpair = *currentToken;
+		Pair newPair;
+		newPair.token = currentToken->token;
+		newPair.lexeme = currentToken->lexeme;
 		match(Token::NEQ);
-		return newpair;
+		return newPair;
 	}
 	else if (currentToken->token == Token::EQ) {
-		Pair newpair = *currentToken;
+		Pair newPair;
+		newPair.token = currentToken->token;
+		newPair.lexeme = currentToken->lexeme;
 		match(Token::EQ);
-		return newpair;
+		return newPair;
 	}
 }
 
@@ -464,7 +511,7 @@ void Translator::branch() {
 		docmd();
 
 		ss.str("");
-		ss << "GOTO " <<;
+		ss << "GOTO ";
 		this->translation.push_back(ss.str());
 		int afterlastbranchgoto = this->translation.size() - 1;
 		this->translation[nextbranchgoto] += this->translation.size();
@@ -513,7 +560,7 @@ Pair Translator::R(Pair R_n) {
 		
 		//sdt	
 		stringstream ss;
-		Pair temp = newtemp(Token::INT);
+		Pair temp = newTemp(Token::INT);
 		ss << temp.lexeme << " = " << R_n.lexeme << " + " << T_n.lexeme;
 		this->translation.push_back(ss.str());
 
@@ -525,7 +572,7 @@ Pair Translator::R(Pair R_n) {
 		Pair T_n = T();
 
 		stringstream ss;
-		Pair temp = newtemp(Token::INT);
+		Pair temp = newTemp(Token::INT);
 		ss << temp.lexeme << " = " << R_n.lexeme << " - " << T_n.lexeme;
 		this->translation.push_back(ss.str());
 
@@ -543,20 +590,20 @@ Pair Translator::Rprime(Pair RR_n) {
 
 		//sdt	
 		stringstream ss;
-		Pair temp = newtemp(Token::INT);
-		ss << temp.lexeme << " = " << R_n.lexeme << " * " << T_n.lexeme;
+		Pair temp = newTemp(Token::INT);
+		ss << temp.lexeme << " = " << RR_n.lexeme << " * " << F_n.lexeme;
 		this->translation.push_back(ss.str());
 
 		return Rprime(temp);
 	}
 	else if (currentToken->token == Token::DIV) {
 		match(Token::DIV);
-		F();
+		Pair F_n = F();
 
 		//sdt	
 		stringstream ss;
-		Pair temp = newtemp(Token::INT);
-		ss << temp.lexeme << " = " << R_n.lexeme << " / " << T_n.lexeme;
+		Pair temp = newTemp(Token::INT);
+		ss << temp.lexeme << " = " << RR_n.lexeme << " / " << F_n.lexeme;
 		this->translation.push_back(ss.str());
 
 		return Rprime(temp);
@@ -571,43 +618,54 @@ Pair Translator::F() {
 		currentToken++;
 		if (currentToken->token == Token::INC) {
 			currentToken--;
-			Pair newpair = *currentToken;
+			Pair newPair;
+			newPair.token = currentToken->token;
+			newPair.lexeme = currentToken->lexeme;
+			
 			match(Token::ID);
 			match(Token::INC, false);
 
 			stringstream ss;
-			ss << newpair.lexeme <<" = "<< newpair.lexeme << " + " << 1;
+			ss << newPair.lexeme <<" = "<< newPair.lexeme << " + " << 1;
 			this->translation.push_back(ss.str());
-			return newpair;
+			return newPair;
 		}
 		else if (currentToken->token == Token::DEC) {
 			currentToken--;
-			Pair newpair = *currentToken;
+			Pair newPair;
+			newPair.token = currentToken->token;
+			newPair.lexeme = currentToken->lexeme;
 			match(Token::ID);
 			match(Token::DEC, false);
 
 			stringstream ss;
-			ss << newpair.lexeme <<" = "<< newpair.lexeme <<" - " << 1;
+			ss << newPair.lexeme <<" = "<< newPair.lexeme <<" - " << 1;
 			this->translation.push_back(ss.str());
-			return newpair;
+			return newPair;
 		}
 		else {
 			currentToken--;
-			Pair newpair = *currentToken;
+			Pair newPair;
+			newPair.token = currentToken->token;
+			newPair.lexeme = currentToken->lexeme;
 			match(Token::ID, false);
 
-			return newpair;
+			return newPair;
 		}
 	}
 	else if (currentToken->token == Token::NUM) {
-		Pair newpair = *currentToken;
+		Pair newPair;
+		newPair.token = currentToken->token;
+		newPair.lexeme = currentToken->lexeme;
 		match(Token::NUM, false);
-		return newpair;
+		return newPair;
 	}
 	else if (currentToken->token == Token::LIT) {
-		Pair newpair = *currentToken;
+		Pair newPair;
+		newPair.token = currentToken->token;
+		newPair.lexeme = currentToken->lexeme;
 		match(Token::LIT, false);
-		return newpair;
+		return newPair;
 	}
 	else if (currentToken->token == Token::PO) {
 		match(Token::PO);
@@ -618,7 +676,9 @@ Pair Translator::F() {
 }
 
 void Translator::assignment() {
-	Pair newpair = *currentToken;
+	Pair newPair;
+	newPair.token = currentToken->token;
+	newPair.lexeme = currentToken->lexeme;
 	match(Token::ID);
 	match(Token::AS);
 	Pair expr_n = expr();
@@ -626,6 +686,6 @@ void Translator::assignment() {
 	
 	//sdt
 	stringstream ss;
-	ss << newpair.lexeme <<" = " <<expr_n.lexeme;
+	ss << newPair.lexeme <<" = " <<expr_n.lexeme;
 	this->translation.push_back(ss.str());
 }
