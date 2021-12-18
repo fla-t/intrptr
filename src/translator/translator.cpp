@@ -10,7 +10,9 @@ int bytesNeeded(Token x) {
 
 Pair Translator::newTemp(Token x) {
 	Pair newpair;
-	newpair.lexeme = "t"+this->tempCount;
+	stringstream ss;
+	ss<<"t"<<this->tempCount++;
+	newpair.lexeme = ss.str();
 	newpair.token = x;
 
 	this->datatypeTable[newpair.lexeme] = x;
@@ -37,6 +39,25 @@ void Translator::PrintDataTypeTable() {
 	cout << "----------------------------------" << endl;
 }
 
+void Translator::PrintAddressTable() {
+	cout << "----------------------------------" << endl;
+	cout << "\tAddress Table" << endl << endl;
+	cout << "ID Name" << "\t\t" << "Address" << endl << endl;
+	for (auto entry : this->addressTable) {
+		cout << entry.first<< "\t\t" << entry.second <<endl;
+	}
+	cout << "----------------------------------" << endl;
+}
+
+void Translator::PrintTranslation() {
+	cout << "----------------------------------" << endl;
+	cout << "\tTranslation Table" << endl << endl;
+	for (int i = 0; i < this->translation.size(); i++) {
+		cout<<i<<"\t"<<this->translation[i]<<endl;
+	}
+	cout << "----------------------------------" << endl;
+}
+
 void Translator::Parse() {
 	if (this->tokenStream.empty()) { 
 		cout << "The tokenStream is empty !" << endl;
@@ -45,6 +66,8 @@ void Translator::Parse() {
 	else {
 		statement();
 		PrintDataTypeTable();
+		PrintAddressTable();
+		PrintTranslation();
 		if (currentToken == tokenStream.end()) {
 			cout << "Everything parsed successfully!" << endl;
 		}
@@ -403,7 +426,7 @@ void Translator::ifcmd() {
 	
 	stringstream ss;
 	
-	ss << "if "<< comp_n << " GOTO " << this->translation.size() + 2;
+	ss << "IF "<< comp_n << " GOTO " << this->translation.size() + 2;
 	this->translation.push_back(ss.str());
 
 	ss.str("");
@@ -501,7 +524,7 @@ void Translator::branch() {
 	
 		stringstream ss;
 		
-		ss << "if "<< comp_n << " GOTO " << this->translation.size() + 2;
+		ss << "IF "<< comp_n << " GOTO " << this->translation.size() + 2;
 		this->translation.push_back(ss.str());
 		ss.str("");
 		ss << "GOTO ";
@@ -514,11 +537,11 @@ void Translator::branch() {
 		ss << "GOTO ";
 		this->translation.push_back(ss.str());
 		int afterlastbranchgoto = this->translation.size() - 1;
-		this->translation[nextbranchgoto] += this->translation.size();
+		this->translation[nextbranchgoto] += to_string(this->translation.size());
 
 		branch();
 
-		this->translation[afterlastbranchgoto] += this->translation.size(); 		
+		this->translation[afterlastbranchgoto] += to_string(this->translation.size()); 		
 	}
 }
 
@@ -528,9 +551,10 @@ void Translator::whilecmd() {
 	
 	stringstream ss;
 
-	ss << "if " << comp_n << "GOTO ";
+	int loopStartPosition = this->translation.size();
+	ss << "IF " << comp_n << " GOTO " << this->translation.size() + 2;
 	this->translation.push_back(ss.str());
-	int getoutofloopgoto = this->translation.size();
+	int loopExitGoto = this->translation.size();
 	ss.str("");
 	
 	ss << "GOTO ";
@@ -538,7 +562,11 @@ void Translator::whilecmd() {
 
 	docmd();
 
-	this->translation[getoutofloopgoto] += this->translation.size();
+	this->translation[loopExitGoto] += to_string(this->translation.size());
+	
+	ss.str("");
+	ss << "GOTO " <<loopStartPosition;
+	this->translation.push_back(ss.str());
 }
 
 Pair Translator::expr() {

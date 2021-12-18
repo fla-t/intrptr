@@ -1,2 +1,9 @@
-int: num;
-char: my_char;
+int: c = 0;
+if 1 < 2: 
+{
+	c++;
+}
+else:
+{
+	c--;
+} 

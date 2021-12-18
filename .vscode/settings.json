@@ -9,6 +9,7 @@
         "regex": "cpp",
         "tuple": "cpp",
         "sstream": "cpp",
-        "vector": "cpp"
+        "vector": "cpp",
+        "ostream": "cpp"
     }
 }

@@ -7,11 +7,11 @@
             "command": "g++",
             "args": [
                 "-fdiagnostics-color=always",
-                "-g",
-                "${fileDirname}\\*.cpp",
-                "${fileDirname}\\lexer\\*.cpp",
-                //"${fileDirname}\\parser\\*.cpp",
-                "${fileDirname}\\translator\\*.cpp",
+                "-g3",
+                "${workspaceFolder}\\src\\*.cpp",
+                "${workspaceFolder}\\src\\lexer\\*.cpp",
+                //"${workspaceFolder}\\src\\parser\\*.cpp",
+                "${workspaceFolder}\\src\\translator\\*.cpp",
                 "-o",
                 "${workspaceFolder}\\bin\\Executable.exe"
             ],

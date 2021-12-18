@@ -1,6 +1,5 @@
 #include "../utils/token.h"
 #include "../utils/pair.h"
-#include "../utils/varStruct.h"
 #include <vector>
 #include <iostream>
 #include <map>
@@ -13,6 +12,7 @@ using namespace std;
 class Translator {
 	vector<Pair> tokenStream;
 	vector<Pair>::iterator currentToken;
+
 	map<string, Token> datatypeTable;
 	map<string, int> addressTable;
 
@@ -23,6 +23,9 @@ class Translator {
 public:
 	Translator(vector<Pair>);
 	void PrintDataTypeTable();
+	void PrintTranslation();
+	void PrintAddressTable();
+	
 	void Parse();
 	void match(Token, bool);
 	Pair newTemp(Token);

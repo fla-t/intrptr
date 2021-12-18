@@ -110,10 +110,12 @@ vector<Pair> Lexer::readFile(string filename) {
 						case '+':
 							if (filehandler.peek() == '+') {
 								temp.token = Token::INC;
+								temp.lexeme = "++";
 								stream.push_back(filehandler.get());
 							}
 							else {
 								temp.token = Token::ADD;
+								temp.lexeme = "+";
 							}
 							TLpairs.push_back(temp);
 							break;
@@ -121,13 +123,18 @@ vector<Pair> Lexer::readFile(string filename) {
 						case '-':
 							if (filehandler.peek() == '-') {
 								temp.token = Token::DEC;
+								temp.lexeme = "--";
 								stream.push_back(filehandler.get());
 							}
 							else if (filehandler.peek() == '>') { 
 								temp.token = Token::IN;
+								temp.lexeme = "->";
 								stream.push_back(filehandler.get());
 							}
-							else { temp.token = Token::SUB; }
+							else { 
+								temp.token = Token::SUB;
+								temp.lexeme = "-";
+							}
 							
 							TLpairs.push_back(temp);
 							break;
@@ -164,21 +171,25 @@ vector<Pair> Lexer::readFile(string filename) {
 							}
 							else if (filehandler.peek() == ' ' || isalpha(filehandler.peek()) || isdigit(filehandler.peek())) {
 								temp.token = Token::DIV;
+								temp.lexeme = "/";
 								TLpairs.push_back(temp);
 							}
 							break;
 							
 						case '*':
 							temp.token = Token::MUL;
+							temp.lexeme = "*";
 							TLpairs.push_back(temp);
 							break;
 
 						case '<':
 							if (filehandler.peek() == '=') {
 								temp.token = Token::LTE;
+								temp.lexeme = "<=";
 							}
 							else {
 								temp.token = Token::LT;
+								temp.lexeme = "<";
 							}
 							
 							TLpairs.push_back(temp);
@@ -187,10 +198,12 @@ vector<Pair> Lexer::readFile(string filename) {
 						case '=':
 							if (filehandler.peek() == '=') {
 								temp.token = Token::EQ;
+								temp.lexeme = "==";
 								stream.push_back(filehandler.get());
 							}
 							else {
 								temp.token = Token::AS;
+								temp.lexeme = "=";
 							}
 							
 							TLpairs.push_back(temp);
@@ -199,9 +212,11 @@ vector<Pair> Lexer::readFile(string filename) {
 						case '>':
 							if (filehandler.peek() == '=') {
 								temp.token = Token::GTE;
+								temp.lexeme = ">=";
 							}
 							else {
 								temp.token = Token::GT;
+								temp.lexeme = ">";
 							}
 							
 							TLpairs.push_back(temp);
@@ -210,6 +225,7 @@ vector<Pair> Lexer::readFile(string filename) {
 						case '~':
 							if (filehandler.peek() == '=') {
 								temp.token = Token::NEQ;
+								temp.lexeme = "~=";
 							}
 							else {
 								throw std::runtime_error("Missing = operator");
@@ -246,46 +262,55 @@ vector<Pair> Lexer::readFile(string filename) {
 
 						case '[':
 							temp.token = Token::SBO;
+							temp.lexeme = "[";
 							TLpairs.push_back(temp);
 							break;
 
 						case ']':
 							temp.token = Token::SBC;
+							temp.lexeme = "]";
 							TLpairs.push_back(temp);
 							break;
 						
 						case '{':
 							temp.token = Token::FBO;
+							temp.lexeme = "{";
 							TLpairs.push_back(temp);
 							break;
 						
 						case '}':
 							temp.token = Token::FBC;
+							temp.lexeme = "}";
 							TLpairs.push_back(temp);
 							break;
 
 						case '(':
 							temp.token = Token::PO;
+							temp.lexeme = "(";
 							TLpairs.push_back(temp);
 							break;
 						
 						case ')':
 							temp.token = Token::PC;
+							temp.lexeme = ")";
 							TLpairs.push_back(temp);
 							break;
 						
 						case ':':
 							temp.token = Token::COL;
+							temp.lexeme = ":";
 							TLpairs.push_back(temp);
 							break;
 
 						case ';':
 							temp.token = Token::SCOL;
+							temp.lexeme = ";";
 							TLpairs.push_back(temp);
 							break;
 
 						case ',':
 							temp.token = Token::COM;
+							temp.lexeme = ",";
 							TLpairs.push_back(temp);
 							break;
 					}
