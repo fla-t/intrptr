@@ -426,29 +426,22 @@ void Translator::ifcmd() {
 	
 	stringstream ss;
 	
+	//starting if statement
 	ss << "IF "<< comp_n << " GOTO " << this->translation.size() + 2;
 	this->translation.push_back(ss.str());
 
+	//the exit goto
 	ss.str("");
-
 	ss << "GOTO ";
 	this->translation.push_back(ss.str());
-
-	int nextbranchgoto = this->translation.size() - 1;
+	int exitGoto = this->translation.size() - 1;
 
 	docmd();
 
-	// ss.str("");
-	// ss << "GOTO ";
-	// this->translation.push_back(ss.str());
-
-	// int afterlastbranchgoto = this->translation.size() - 1;
-	this->translation[nextbranchgoto] += to_string(this->translation.size());
+	//backpatch the exit goto
+	this->translation[exitGoto] += to_string(this->translation.size());
 
 	branch();
-	
-	// this->translation[afterlastbranchgoto] += to_string(this->translation.size()); 
-
 }
 
 string Translator::comparison() {
@@ -524,24 +517,22 @@ void Translator::branch() {
 	
 		stringstream ss;
 		
+		//starting if statement
 		ss << "IF "<< comp_n << " GOTO " << this->translation.size() + 2;
 		this->translation.push_back(ss.str());
+		
+		//the exit goto 
 		ss.str("");
 		ss << "GOTO ";
 		this->translation.push_back(ss.str());
-		int nextbranchgoto = this->translation.size() - 1;
+		int exitGoto = this->translation.size() - 1;
 
 		docmd();
 
-		//ss.str("");
-		//ss << "GOTO ";
-		// this->translation.push_back(ss.str());
-		// int afterlastbranchgoto = this->translation.size() - 1;
-		this->translation[nextbranchgoto] += to_string(this->translation.size());
+		//backpatch the exit goto
+		this->translation[exitGoto] += to_string(this->translation.size());
 
 		branch();
-
-		// this->translation[afterlastbranchgoto] += to_string(this->translation.size()); 		
 	}
 }
 
@@ -551,19 +542,24 @@ void Translator::whilecmd() {
 	
 	stringstream ss;
 
+	//the starting if statement
 	int loopStartPosition = this->translation.size();
 	ss << "IF " << comp_n << " GOTO " << this->translation.size() + 2;
 	this->translation.push_back(ss.str());
-	int loopExitGoto = this->translation.size();
-	ss.str("");
 	
+	int exitGoto = this->translation.size();
+	
+	//loop exit goto
+	ss.str("");
 	ss << "GOTO ";
 	this->translation.push_back(ss.str());
 
 	docmd();
 
-	this->translation[loopExitGoto] += to_string(this->translation.size());
+	//backpatch the exit goto
+	this->translation[exitGoto] += to_string(this->translation.size() + 1);
 	
+	//the return goto
 	ss.str("");
 	ss << "GOTO " <<loopStartPosition;
 	this->translation.push_back(ss.str());
