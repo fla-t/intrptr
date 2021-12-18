@@ -25,6 +25,7 @@ public:
 	void PrintDataTypeTable();
 	void Parse();
 	void match(Token, bool);
+	Pair newTemp(Token);
 
 	void statement();
 	void input();
@@ -35,17 +36,17 @@ public:
 
 	Pair expr();
 	Pair T();
-	Pair R();
+	Pair R(Pair);
 	Pair F();
-	Pair Rprime();
+	Pair Rprime(Pair);
 
 
 	void docmd();
 	void branch();
-	void comparison();
-	void RO();
+	string comparison();
+	Pair RO();
 
-	void params();
+	Pair params();
 
 	void initialization();
 	
@@ -55,7 +56,7 @@ public:
 
 	Pair intid();
 	Pair intinit();
-	Pair intinitlist();
+	void intinitlist();
 
 };
 
