@@ -1,5 +1,7 @@
 #include "./lexer/lexer.h"
-#include "./parser/parser.h"
+// #include "./parser/parser.h"
+#include "./translator/translator.h"
+
 #include <iostream>
 
 using namespace std;
@@ -13,9 +15,11 @@ int main(int argc, char** argv) {
 			cout << "Token: " << token_to_string[result[i].token] << "\t\t\t" << "lexeme: " << result[i].lexeme << endl;
 		}*/
 		
-		Parser parser(result);
-		parser.Parse();
+		// Parser parser(result);
+		// parser.Parse();
 
+		Translator newtranslator(result);
+		newtranslator.Parse();
 	}
 	else {
 		cout<<"no file requested"<<endl;

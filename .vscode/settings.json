@@ -3,6 +3,10 @@
         "iostream": "cpp",
         "xlocale": "cpp",
         "string": "cpp",
-        "xstring": "cpp"
+        "xstring": "cpp",
+        "*.tcc": "cpp",
+        "functional": "cpp",
+        "regex": "cpp",
+        "tuple": "cpp"
     }
 }

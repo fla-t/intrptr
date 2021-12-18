@@ -10,7 +10,8 @@
                 "-g",
                 "${fileDirname}/*.cpp",
                 "${fileDirname}/lexer/*.cpp",
-                "${fileDirname}/parser/*.cpp",
+                // "${fileDirname}/parser/*.cpp",
+                "${fileDirname}/translator/*.cpp",
                 "-o",
                 "${workspaceFolder}/bin/Executable"
             ],
