@@ -1,0 +1,12 @@
+int: c = 0;
+if 1 < 2: 
+{
+	c++;
+}
+elif 3 < 2:
+{
+	print("dont fuck my dog");
+	if c == 0: {
+		print("help");
+	}
+}

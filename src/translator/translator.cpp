@@ -438,16 +438,16 @@ void Translator::ifcmd() {
 
 	docmd();
 
-	ss.str("");
-	ss << "GOTO ";
-	this->translation.push_back(ss.str());
+	// ss.str("");
+	// ss << "GOTO ";
+	// this->translation.push_back(ss.str());
 
-	int afterlastbranchgoto = this->translation.size() - 1;
-	this->translation[nextbranchgoto] += this->translation.size();
+	// int afterlastbranchgoto = this->translation.size() - 1;
+	this->translation[nextbranchgoto] += to_string(this->translation.size());
 
 	branch();
 	
-	this->translation[afterlastbranchgoto] += this->translation.size(); 
+	// this->translation[afterlastbranchgoto] += to_string(this->translation.size()); 
 
 }
 
@@ -533,15 +533,15 @@ void Translator::branch() {
 
 		docmd();
 
-		ss.str("");
-		ss << "GOTO ";
-		this->translation.push_back(ss.str());
-		int afterlastbranchgoto = this->translation.size() - 1;
+		//ss.str("");
+		//ss << "GOTO ";
+		// this->translation.push_back(ss.str());
+		// int afterlastbranchgoto = this->translation.size() - 1;
 		this->translation[nextbranchgoto] += to_string(this->translation.size());
 
 		branch();
 
-		this->translation[afterlastbranchgoto] += to_string(this->translation.size()); 		
+		// this->translation[afterlastbranchgoto] += to_string(this->translation.size()); 		
 	}
 }
 
