@@ -1,6 +1,5 @@
 #include "../utils/token.h"
 #include "../utils/pair.h"
-#include "../utils/varStruct.h"
 #include <vector>
 #include <iostream>
 #include <map>
