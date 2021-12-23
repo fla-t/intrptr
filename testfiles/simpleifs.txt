@@ -8,19 +8,3 @@ while i < 5: {
 	i++;
 }
 
-----------------------------------
-        Translation Table
-
-0       i = 0
-1       IF i < 5 GOTO 3
-2       GOTO 11
-3       j = 0
-4       IF j < 2 GOTO 6
-5       GOTO 9
-6       OUT "lol"
-7       j = j + 1
-8       GOTO 4
-9       i = i + 1
-10      GOTO 1
-----------------------------------
-Everything parsed successfully!
