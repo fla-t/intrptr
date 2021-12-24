@@ -1,0 +1,42 @@
+//ASSIGNMENT + MATHS
+S -> 	id1 {Check id1} 
+	= 
+	id2 {Check id2}
+	Operator{ 
+			if (Op.type==0) 
+			{
+				quad(Op.n, id2.lex, id1.lex)}
+			}
+			else
+				quad(Op.n, id2.lex, Op.id, id1.lex)
+		}
+
+Operator -> + id3 { Op.n = +; Op.type = 1; Op.id = id3.lex }
+ 
+Operator -> - id3 { Op.n = -; Op.type = 1; Op.id = id3.lex }
+
+Operator -> / id3 { Op.n = /; Op.type = 1; Op.id = id3.lex }
+
+Operator -> * id3 { Op.n = *; Op.type = 1; Op.id = id3.lex }
+
+Operator -> ^ { Op.n = +; Op.type = 0 }
+
+--------------------------------------------------------------------
+//IF
+S -> if id1 Compare id2 goto id3 { quad(Compare.n, id1.lex, id2.lex, id3.lex)}
+
+Compare -> < | > | <= | >= | == | ~= {Compare.n = CurrentComp}
+
+--------------------------------------------------------------------
+//OUT
+S -> OUT id {   Check id
+		//IF NOT ID BUT LITERAL OR NUM
+		if (id.lex[0] == "'")
+			newtemp() //Tmp declare for string
+		else if(id.lex[0] == """)
+			newtemp() //Tmp declare for char
+		else
+			newtemp() //Tmp declare for int		
+		//END
+
+		quad(OUT, id.lex) }

@@ -53,6 +53,8 @@ Gen::Gen(map<string, Token> datatypeTable, map<string, int> addressTable, vector
 
 	this->tempCount = tempCount;
 	this->currentAddr = currentAddr;
+
+	fillInitValTable();
 }
 
 Gen::Gen(Translator x) {
@@ -70,124 +72,69 @@ Gen::~Gen() {
 
 void Gen::fillInitValTable() {
 	for (auto i: this->datatypeTable) {
-		this->initialvalTable[i->first] = "";
+		this->initialvalTable[i.first] = "";
 	}
 }
 
 void Gen::convert() {
-	for (auto i: translation) {
+	statement();
+}
+
+void Gen::statement() {
+	for (auto i: this->translation) {
 		stringstream ss(i);
-		string op;
+		string temp;
 
-		ss >> op;
+		ss >> temp;
 
-		if (op == "IF") {
+		if (temp == "IF") {
 
 		}
-		else if (op == "GOTO") {
+		else if (temp == "OUT") {
 			quad tempquad;
-			tempquad.opcode = Opcode::GOTO;
+			string temp1;
 
-			ss >> op;
+			tempquad.opcode = Opcode::OUT;
+			ss >> temp1;
 
-			tempquad.var1 = stoi(op);
-			this->converted.push_back(tempquad);
-		}
-		else if (op == "OUT") { 
-				
-		}
-		else if (op == "IN") {
-			quad tempquad;
-			tempquad.opcode = Opcode::IN;	
-
-			ss >> op;
-			
-			if (datatypeTable.find(op) == datatypeTable.end()) {
-				
+			if (datatypeTable.find(temp1) == datatypeTable.end()) {
+				tempquad.var1 = this->addressTable[temp1];
 			}
 			else {
-				throw std::runtime_error("bad variable");
+				if (temp1[0] == "\'") { 
+					//literal
+				}
+				else if (temp1[0] == '\"') { 
+
+				}
 			}
 		}
-		else {
+		else if (temp == "IN") {
 			quad tempquad;
-			// confirming identifiers
-			if (datatypeTable.find(op) == datatypeTable.end()){
-				tempquad.store = this->addressTable[op];
-				tempquad.opcode = Opcode::AS;
+			string temp1;
 
-				ss >> op; // miss. always =
-				ss >> op;
+			tempquad.opcode = Opcode::IN;
+			ss >> temp1;
 
-				if (datatypeTable.find(op) == datatypeTable.end()) {
-					tempquad.var1 = this->addressTable[op];
-				}
-				else {	
-					int addr;				
-					if (op[0] == '\'') {
-						//char
-						char temp = op[1];
-						addr = newTemp(temp);
-					}
-					else if (op[0] == '\"') {
-						//string
-						string temp = op.substr(1, op.size()-2);
-						addr = newTemp(temp);
-					}
-					else {
-						//int 
-						int temp = stoi(op);
-						addr = newTemp(temp);
-					}
-
-					tempquad.var1 = addr;
-				}
+			if (datatypeTable.find(temp1) != datatypeTable.end()) {
+				throw std::runtime_error("Variable not found");
 			}
 
-			if (!ss.eof()) {
-				ss >> op;
-
-				if (op == "+" ) {
-					tempquad.opcode = Opcode::ADD;
-				}
-				else if (op == "-") {
-					tempquad.opcode = Opcode::SUB;
-				}
-				else if (op == "/") {
-					tempquad.opcode = Opcode::DIV;
-				}
-				else if (op == "*") {
-					tempquad.opcode = Opcode::MUL;
-				}
-
-				ss >> op;
-
-				if (datatypeTable.find(op) == datatypeTable.end()) {
-					tempquad.var2 = this->addressTable[op];
-				}
-				else {	
-					int addr;				
-					if (op[0] == '\'') {
-						//char
-						char temp = op[1];
-						addr = newTemp(temp);
-					}
-					else if (op[0] == '\"') {
-						//string
-						string temp = op.substr(1, op.size()-2);
-						addr = newTemp(temp);
-					}
-					else {
-						//int 
-						int temp = stoi(op);
-						addr = newTemp(temp);
-					}
-
-					tempquad.var2 = addr;
-				}	
-			}
-
+			tempquad.var1 = this->addressTable[temp1];
 			this->converted.push_back(tempquad);
 		}
+		else if (temp == "GO") {
+			quad tempquad;
+
+			tempquad.opcode = Opcode::GOTO;
+			ss >> tempquad.var1;
+
+			this->converted.push_back(tempquad);
+		}	
+		else {
+			// maths
+			
+		}
+
 	}
 }

@@ -31,6 +31,15 @@ public:
 	int newTemp(string);
 	int newTemp(char);
 
+	void statement();
+	void assignment();
+	void operators();
+	void ifcmd();
+	void compare();
+	void out();
+	void in();
+
+
 	~Gen();
 };
 

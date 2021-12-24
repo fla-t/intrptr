@@ -5,9 +5,9 @@
 
 struct quad {
 	Opcode opcode;
-	int var1;
-	int var2;
-	int store;
+	int var1 = -1;
+	int var2 = -1;
+	int store = -1;
 };
 
 #endif
