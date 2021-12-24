@@ -166,7 +166,7 @@ Pair Translator::charid() {
 }
 
 
-Pair Translator::charinit() {
+void Translator::charinit() {
 	Pair charid_n = charid();
 
 	// charinit part
@@ -190,7 +190,7 @@ Pair Translator::charinit() {
 	}	
 }
 
-Pair Translator::charinitlist() {
+void Translator::charinitlist() {
 
 // includes contidinit
 	if (currentToken->token == Token::COM) {
@@ -257,7 +257,7 @@ Pair Translator::intid() {
 }
 
 
-Pair Translator::intinit() {
+void Translator::intinit() {
 	Pair intid_n = intid();
 
 	if (currentToken->token == Token::AS) {

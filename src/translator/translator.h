@@ -54,11 +54,11 @@ public:
 	void initialization();
 	
 	Pair charid();
-	Pair charinit();
-	Pair charinitlist();
+	void charinit();
+	void  charinitlist();
 
 	Pair intid();
-	Pair intinit();
+	void intinit();
 	void intinitlist();
 
 };

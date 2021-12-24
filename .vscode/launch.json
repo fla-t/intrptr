@@ -15,7 +15,7 @@
                 "program": "${workspaceFolder}\\bin\\Executable"
             },
 
-            "args": ["testfiles/simpleifs.txt"],
+            "args": ["testfiles/examplecode.txt"],
             "stopAtEntry": false,
             "cwd": "${workspaceFolder}",
             "environment": [],
