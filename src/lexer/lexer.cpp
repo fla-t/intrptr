@@ -246,13 +246,18 @@ vector<Pair> Lexer::readFile(string filename) {
 									throw std::runtime_error("Missing closing double brackets");
 								}
 							}
-							temp.lexeme = stream.substr(1, stream.size() - 2 );
+							temp.lexeme = "\"";
+							temp.lexeme += stream.substr(1, stream.size() - 2 );
+							temp.lexeme += "\"";
+							
 							TLpairs.push_back(temp);
 							break;
 						
 						case '\'':
 							temp.token = Token::LIT;
+							temp.lexeme = "\'";
 							temp.lexeme.push_back(filehandler.get());
+							temp.lexeme += "\'";
 							if (filehandler.peek() != '\'') {
 								throw std::runtime_error("Missing closing single quotes");
 							}

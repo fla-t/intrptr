@@ -348,7 +348,7 @@ void Translator::funcs() {
 		stringstream ss;
 		ss << "OUT ";
 		if (param_n.token == Token::STR) {
-			ss << "\""<< param_n.lexeme <<"\"";
+			ss << param_n.lexeme;
 		}
 		else {
 			ss << param_n.lexeme;
@@ -368,7 +368,7 @@ void Translator::funcs() {
 		stringstream ss;
 		ss << "OUT ";
 		if (param_n.token == Token::STR) {
-			ss << "\""<< param_n.lexeme <<"\"";
+			ss << param_n.lexeme;
 		}
 		else {
 			ss << param_n.lexeme;

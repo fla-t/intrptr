@@ -10,6 +10,7 @@ using namespace std;
 
 
 class Translator {
+public:
 	vector<Pair> tokenStream;
 	vector<Pair>::iterator currentToken;
 
@@ -20,7 +21,6 @@ class Translator {
 	int currentAddr;
 	int tempCount;
 
-public:
 	Translator(vector<Pair>);
 	void PrintDataTypeTable();
 	void PrintTranslation();

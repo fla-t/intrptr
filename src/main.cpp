@@ -1,6 +1,6 @@
 #include "./lexer/lexer.h"
-// #include "./parser/parser.h"
 #include "./translator/translator.h"
+#include "./gen/gen.h"
 
 #include <iostream>
 
@@ -20,6 +20,8 @@ int main(int argc, char** argv) {
 
 		Translator newtranslator(result);
 		newtranslator.Parse();
+
+		Gen generator(newtranslator);
 	}
 	else {
 		cout<<"no file requested"<<endl;
