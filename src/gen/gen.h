@@ -16,6 +16,7 @@ class Gen {
 	map<string, int> addressTable;
 	map<string, string> initialvalTable;
 	vector<string> translation;
+
 	vector<quad> converted;
 
 	int currentAddr;
@@ -23,15 +24,16 @@ class Gen {
 
 public:
 	Gen();
-	Gen(map<string, Token>, map<string, int>, vector<string>, int, int);
 	Gen(Translator);
-	void convert();
+
 	void fillInitValTable();
+	
+	void PrintQuadTable();
 	int newTemp(int);
 	int newTemp(string);
 	int newTemp(char);
 
-	void statement();
+	void convert();
 	void assignment();
 	void operators();
 	void ifcmd();

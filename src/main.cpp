@@ -22,6 +22,7 @@ int main(int argc, char** argv) {
 		newtranslator.Parse();
 
 		Gen generator(newtranslator);
+		generator.convert();
 	}
 	else {
 		cout<<"no file requested"<<endl;
