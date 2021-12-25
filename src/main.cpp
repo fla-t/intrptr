@@ -27,7 +27,7 @@ int main(int argc, char** argv) {
 		unsigned char* ds = generator.generateData();
 
 		VM newvm(generator.converted, ds, generator.generateAddressTypeMap());
-
+		newvm.run();
 	}
 	else {
 		cout<<"no file requested"<<endl;

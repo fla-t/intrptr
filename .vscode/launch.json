@@ -10,7 +10,7 @@
             "request": "launch",
             // Resolved by CMake Tools:
             "program": "${command:cmake.launchTargetPath}",
-            "args": ["testfiles\\exprcheck.txt"],
+            "args": ["testfiles\\simpleifs.txt"],
             "stopAtEntry": false,
             "cwd": "${workspaceFolder}",
             "environment": [],

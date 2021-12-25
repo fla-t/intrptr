@@ -235,7 +235,7 @@ void VM::run() {
 
 			
 			case Opcode::GOTO:
-				this->pc = machineCode[pc].store - 1;
+				this->pc = machineCode[pc].var1 - 1;
 				break;
 
 			case Opcode::IN:
@@ -265,11 +265,10 @@ void VM::run() {
 				break;
 
 			case Opcode::OUTSTR:
-				int i = ds[machineCode[pc].var1];
+				int i = machineCode[pc].var1;
 				for (; ds[i] != '\0'; i++) {
 					cout << ds[i];
 				}
-				cout << endl;
 				break;
 		}
 	}
