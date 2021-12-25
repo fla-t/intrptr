@@ -1,7 +1,7 @@
 #include "./lexer/lexer.h"
 #include "./translator/translator.h"
 #include "./gen/gen.h"
-#include "./vm/vm.h"
+// #include "./vm/vm.h"
 
 #include <iostream>
 #include <filesystem>
