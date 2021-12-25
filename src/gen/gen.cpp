@@ -1,5 +1,6 @@
 #include "./gen.h"
 #include <sstream>
+#include <algorithm>
 
 map<Opcode, string> opcode_to_string {
 	{ Opcode::ADD, "add" },		 	// addition
@@ -17,6 +18,21 @@ map<Opcode, string> opcode_to_string {
 	{ Opcode::IN, "IN"}, 			// input symbol
 	{ Opcode::GOTO, "GOTO"}			// goto 
 };
+
+bool cmp(pair<string, int>& a, pair<string, int>& b) {
+    return a.second < b.second;
+}
+  
+vector<pair<string, int>> sort(map<string, int>& M) {
+  
+    vector<pair<string, int>> A;
+    for (auto& it : M) {
+        A.push_back(it);
+    }
+
+    sort(A.begin(), A.end(), cmp);
+	return A;
+}
 
 string stringExtract(stringstream& ss) {
 	char buffer[100];
@@ -63,6 +79,36 @@ int Gen::newTemp(char x) {
 	this->currentAddr += 1;
 
 	return this->addressTable[name];
+}
+
+// void Gen::PrintDataTypeTable() {
+// 	cout << "----------------------------------" << endl;
+// 	cout << "\tDatatype Table" << endl << endl;
+// 	cout << "ID Name" << "\t\t" << "DataType" << endl << endl;
+// 	for (auto entry : this->datatypeTable) {
+// 		cout << entry.first<< "\t\t" << token_to_symbol[entry.second] <<endl;
+// 	}
+// 	cout << "----------------------------------" << endl;
+// }
+
+void Gen::PrintInitValTable() {
+	cout << "----------------------------------" << endl;
+	cout << "\tInitVal Table" << endl << endl;
+	cout << "Name" << "\t\t" << "Value" << endl << endl;
+	for (auto entry : this->initialvalTable) {
+		cout << entry.first<< "\t\t" << entry.second << endl;
+	}
+	cout << "----------------------------------" << endl;
+}
+
+void Gen::PrintAddressTable() {
+	cout << "----------------------------------" << endl;
+	cout << "\tAddress Table" << endl << endl;
+	cout << "ID Name" << "\t\t" << "Address" << endl << endl;
+	for (auto entry : this->addressTable) {
+		cout << entry.first<< "\t\t" << entry.second <<endl;
+	}
+	cout << "----------------------------------" << endl;
 }
 
 Gen::Gen() {
@@ -262,4 +308,45 @@ void Gen::convert() {
 	}
 
 	PrintQuadTable();
+}
+
+void Gen::GenerateData() {
+	// vector<unsigned char> DataArray;
+	vector<pair<string, int>> sortedAddr = sort(this->addressTable);
+	PrintAddressTable();
+	PrintInitValTable();
+
+	int maxAddr = 0; 
+
+	for (auto i: this->addressTable) {
+		if (i.second >= maxAddr) {
+			maxAddr = i.second;
+		}
+	}
+
+	unsigned char* DataArray = new unsigned char[maxAddr]; 
+
+	for (int i=0; i < sortedAddr.size(); i++) {
+		if (this->initialvalTable[sortedAddr[i].first] != "") {
+			int initvalindex = 0;
+			int endLength = sortedAddr[i+1].second;
+
+			if (i - 1 == sortedAddr.size()) {
+				int endLength = maxAddr ;
+			}
+			else {
+				int endLength = sortedAddr[i+1].second;
+			}
+			
+			for (int j = sortedAddr[i].second; j < endLength; j++, initvalindex++) {
+				DataArray[j] = initialvalTable[sortedAddr[i].first][initvalindex];
+			}
+		}
+	}
+
+
+	cout<<"-----------------------------------"<<endl;
+	for (int i = 0; i < maxAddr; i++) {
+		cout<<DataArray[i]<<endl;
+	}
 }

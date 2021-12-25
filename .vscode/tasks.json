@@ -8,6 +8,7 @@
             "args": [
                 "-fdiagnostics-color=always",
                 "-g3",
+                "-Wl,--stack,4194304 ",
                 "${workspaceFolder}/src/*.cpp",
                 "${workspaceFolder}/src/lexer/*.cpp",
                 "${workspaceFolder}/src/translator/*.cpp",

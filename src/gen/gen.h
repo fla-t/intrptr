@@ -17,18 +17,22 @@ class Gen {
 	map<string, string> initialvalTable;
 	vector<string> translation;
 
-	vector<quad> converted;
-
 	int currentAddr;
 	int tempCount;
 
 public:
+	vector<quad> converted;
+
 	Gen();
 	Gen(Translator);
 
 	void fillInitValTable();
-	
 	void PrintQuadTable();
+	void GenerateData();
+	void PrintDataTypeTable();
+	void PrintAddressTable();
+	void PrintInitValTable();
+
 	int newTemp(int);
 	int newTemp(string);
 	int newTemp(char);
