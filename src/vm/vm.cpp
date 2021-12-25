@@ -4,3 +4,8 @@ VM::VM(vector<quad> quad, unsigned char* ds) {
 	this->ds = ds;
 	this->machineCode = quad;
 }
+
+
+void VM::run() {
+	
+}

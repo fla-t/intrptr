@@ -15,6 +15,7 @@ class VM {
 	unsigned char* ds;
 public:
 	VM(vector<quad>, unsigned char*);
+	void run();
 };
 
 #endif

@@ -352,26 +352,4 @@ unsigned char* Gen::GenerateData() {
 		}
 	}
 	return DataArray;
-	
-	// for (auto i : addressTable) {
-	// 	cout << i.first << ": ";
-	// 	if (datatypeTable[i.first] == Token::INT) {
-	// 		int a = int((unsigned char)(DataArray[i.second]) << 24 |
-	// 			(unsigned char)(DataArray[i.second + 1]) << 16 |
-	// 			(unsigned char)(DataArray[i.second + 2]) << 8 |
-	// 			(unsigned char)(DataArray[i.second + 3]));
-
-	// 		cout << a << endl;
-	// 	}
-	// 	else if (datatypeTable[i.first] == Token::CHAR) {
-	// 		char a = DataArray[i.second];
-	// 		cout << a << endl;
-	// 	}
-	// 	else if (datatypeTable[i.first] == Token::STR) {
-	// 		for (int j = i.second; DataArray[j] != '\0'; j++) {
-	// 			cout << DataArray[j];
-	// 		}
-	// 		cout << endl;
-	// 	}
-	// }
 }
