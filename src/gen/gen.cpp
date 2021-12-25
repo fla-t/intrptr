@@ -210,7 +210,6 @@ void Gen::convert() {
 
 			this->converted.push_back(tempquad);
 		}
-
 		else if (temp == "OUT") {
 			quad tempquad;
 			string temp1;
@@ -224,7 +223,13 @@ void Gen::convert() {
 			else {
 				if (temp1[0] == '\'') { 
 					//literal
-					tempquad.var1 = newTemp((char)temp1[1]);
+					if (temp1.size() == 1) {
+						tempquad.var1 = newTemp((char)'\n');
+					}
+					else {
+						tempquad.var1 = newTemp((char)temp1[1]);
+
+					}
 				}
 				else if (temp1[0] == '\"') { 
 					//str
@@ -317,15 +322,7 @@ unsigned char* Gen::generateData() {
 	PrintAddressTable();
 	PrintInitValTable();
 
-	int maxAddr = 0; 
-
-	for (auto i: this->addressTable) {
-		if (i.second >= maxAddr) {
-			maxAddr = i.second;
-		}
-	}
-
-	unsigned char* DataArray = new unsigned char[maxAddr] {0};
+	unsigned char* DataArray = new unsigned char[currentAddr] {0};
 
 	for (int i=0; i < sortedAddr.size(); i++) {
 		if (this->initialvalTable[sortedAddr[i].first] != "") {
@@ -340,7 +337,7 @@ unsigned char* Gen::generateData() {
 				int endLength = sortedAddr[i + 1].second;
 
 				if (i - 1 == sortedAddr.size()) {
-					int endLength = maxAddr;
+					int endLength = currentAddr;
 				}
 				else {
 					int endLength = sortedAddr[i + 1].second;

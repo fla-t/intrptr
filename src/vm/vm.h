@@ -21,7 +21,7 @@ public:
 	VM(vector<quad>, unsigned char*, map<int, Token>);
 	void run();
 
-	void VM::typeCheck(int, int);
+	void typeCheck(int, int);
 
 	int getIntFromDS(int);
 	void storeIntInDS(int, int);

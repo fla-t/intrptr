@@ -1,9 +1,5 @@
-int: i = 0;
-while i < 5: {
-	int: j = 0;
-	while j < 2: {
-		print("lol");
-		j++;
-	}
-	i++;
+int: j = 0;
+while j < 2: {
+	println("lol");
+	j++;
 }

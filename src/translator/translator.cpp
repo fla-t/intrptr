@@ -377,7 +377,7 @@ void Translator::funcs() {
 		
 		ss.str("");
 
-		ss << "OUT \"\\n\"";
+		ss << "OUT \'\n\'";
 		this->translation.push_back(ss.str());
 		
 		match(Token::PC);

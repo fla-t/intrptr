@@ -258,7 +258,7 @@ void VM::run() {
 					int temp = getIntFromDS(machineCode[pc].var1);
 					cout << temp;
 				}
-				else if (this->addrtypeMap[machineCode[pc].var1] == Token::CHAR) {
+				else if ((this->addrtypeMap[machineCode[pc].var1] == Token::CHAR) || (this->addrtypeMap[machineCode[pc].var1] == Token::LIT)) {
 					char temp = ds[machineCode[pc].var1];
 					cout << temp;
 				}

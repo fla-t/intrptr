@@ -16,7 +16,7 @@ class Gen {
 	map<string, int> addressTable;
 	map<string, string> initialvalTable;
 	vector<string> translation;
-
+	
 	int currentAddr;
 	int tempCount;
 
