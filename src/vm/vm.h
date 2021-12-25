@@ -1,5 +1,6 @@
 #include "../utils/opcode.h"
 #include "../utils/quad.h"
+#include "../utils/token.h"
 
 #include <vector>
 #include <iostream>
@@ -13,6 +14,7 @@ using namespace std;
 class VM {
 	vector<quad> machineCode;
 	unsigned char* ds;
+	int pc;
 public:
 	VM(vector<quad>, unsigned char*);
 	void run();
