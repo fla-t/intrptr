@@ -1,8 +1,10 @@
 #include "./lexer/lexer.h"
 #include "./translator/translator.h"
 #include "./gen/gen.h"
+#include "./vm/vm.h"
 
 #include <iostream>
+#include <filesystem>
 
 using namespace std;
 
@@ -23,7 +25,8 @@ int main(int argc, char** argv) {
 
 		Gen generator(newtranslator);
 		generator.convert();
-		generator.GenerateData();
+		unsigned char * ds = generator.GenerateData(); //data segment
+
 	}
 	else {
 		cout<<"no file requested"<<endl;

@@ -1,4 +1,6 @@
 /build
 /src/main.exe
 /bin
+/.vs
+/cc-vs
 *.rar

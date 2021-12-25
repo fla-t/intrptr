@@ -28,8 +28,7 @@ public:
 
 	void fillInitValTable();
 	void PrintQuadTable();
-	void GenerateData();
-	void PrintDataTypeTable();
+	unsigned char * GenerateData();
 	void PrintAddressTable();
 	void PrintInitValTable();
 
@@ -38,12 +37,7 @@ public:
 	int newTemp(char);
 
 	void convert();
-	void assignment();
-	void operators();
-	void ifcmd();
-	void compare();
-	void out();
-	void in();
+
 
 
 	~Gen();

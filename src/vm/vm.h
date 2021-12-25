@@ -12,9 +12,9 @@ using namespace std;
 
 class VM {
 	vector<quad> machineCode;
-	vector<unsigned char> data;
+	unsigned char* ds;
 public:
-	VM(vector<quad>, vector<unsigned char>);
+	VM(vector<quad>, unsigned char*);
 };
 
 #endif

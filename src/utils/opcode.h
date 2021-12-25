@@ -22,6 +22,8 @@ enum class Opcode {
 	NEQ, 			// not equal
 	
 	OUT, 			// print()
+	OUTSTR,			// printing strings
+
 	IN, 			// input symbol
 	GOTO,			// goto 
 };

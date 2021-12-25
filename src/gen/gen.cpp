@@ -61,8 +61,8 @@ int Gen::newTemp(string x) {
 
 	this->datatypeTable[name] = Token::STR;
 	this->addressTable[name] = this->currentAddr;
-	this->initialvalTable[name] = x;
-	this->currentAddr += x.size();
+	this->initialvalTable[name] = (x+"\0");
+	this->currentAddr += x.size() + 1;
 
 	return this->addressTable[name];
 }
@@ -229,6 +229,7 @@ void Gen::convert() {
 				else if (temp1[0] == '\"') { 
 					//str
 					tempquad.var1 = newTemp(temp1.substr(1, temp1.size()-2));
+					tempquad.opcode = Opcode::OUTSTR;
 				}
 				else {
 					tempquad.var1 = newTemp(stoi(temp1));
@@ -310,7 +311,7 @@ void Gen::convert() {
 	PrintQuadTable();
 }
 
-void Gen::GenerateData() {
+unsigned char* Gen::GenerateData() {
 	// vector<unsigned char> DataArray;
 	vector<pair<string, int>> sortedAddr = sort(this->addressTable);
 	PrintAddressTable();
@@ -324,29 +325,63 @@ void Gen::GenerateData() {
 		}
 	}
 
-	unsigned char* DataArray = new unsigned char[maxAddr]; 
+	unsigned char* DataArray = new unsigned char[maxAddr] {0};
 
 	for (int i=0; i < sortedAddr.size(); i++) {
 		if (this->initialvalTable[sortedAddr[i].first] != "") {
-			int initvalindex = 0;
-			int endLength = sortedAddr[i+1].second;
+			if (this->datatypeTable[sortedAddr[i].first] == Token::INT) {
+				/*#include <vector>
+				using namespace std;
 
-			if (i - 1 == sortedAddr.size()) {
-				int endLength = maxAddr ;
+				vector<unsigned char> intToBytes(int paramInt)
+				{
+					vector<unsigned char> arrayOfByte(4);
+					for (int i = 0; i < 4; i++)
+						arrayOfByte[3 - i] = (paramInt >> (i * 8));
+					return arrayOfByte;
+				}*/
+				int paramInt = stoi(this->initialvalTable[sortedAddr[i].first]);
+				for (int j = sortedAddr[i].second + 4; j > sortedAddr[i].second; j--) {
+					DataArray[j] = (paramInt >> ((j-3) * 8));
+				}
 			}
 			else {
-				int endLength = sortedAddr[i+1].second;
-			}
-			
-			for (int j = sortedAddr[i].second; j < endLength; j++, initvalindex++) {
-				DataArray[j] = initialvalTable[sortedAddr[i].first][initvalindex];
+				int initvalindex = 0;
+				int endLength = sortedAddr[i + 1].second;
+
+				if (i - 1 == sortedAddr.size()) {
+					int endLength = maxAddr;
+				}
+				else {
+					int endLength = sortedAddr[i + 1].second;
+				}
+
+				for (int j = sortedAddr[i].second; j < endLength; j++, initvalindex++)
+					DataArray[j] = initialvalTable[sortedAddr[i].first][initvalindex];
 			}
 		}
 	}
+	return DataArray;
+	
+	/*for (auto i : addressTable) {
+		cout << i.first << ": ";
+		if (datatypeTable[i.first] == Token::INT) {
+			int a = int((unsigned char)(DataArray[i.second]) << 24 |
+				(unsigned char)(DataArray[i.second + 1]) << 16 |
+				(unsigned char)(DataArray[i.second + 2]) << 8 |
+				(unsigned char)(DataArray[i.second + 3]));
 
-
-	cout<<"-----------------------------------"<<endl;
-	for (int i = 0; i < maxAddr; i++) {
-		cout<<DataArray[i]<<endl;
+			cout << a << endl;
+		}
+		else if (datatypeTable[i.first] == Token::CHAR) {
+			char a = DataArray[i.second];
+			cout << a << endl;
+		}
+		else if (datatypeTable[i.first] == Token::STR) {
+			for (int j = i.second; DataArray[j] != '\0'; j++) {
+				cout << DataArray[j];
+			}
+			cout << endl;
+		}
 	}
-}
+}*/
