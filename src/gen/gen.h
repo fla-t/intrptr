@@ -26,9 +26,11 @@ public:
 	Gen();
 	Gen(Translator);
 
+	unsigned char * generateData();
+	map<int, Token> generateAddressTypeMap();
+
 	void fillInitValTable();
 	void PrintQuadTable();
-	unsigned char * GenerateData();
 	void PrintAddressTable();
 	void PrintInitValTable();
 

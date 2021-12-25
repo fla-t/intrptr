@@ -311,7 +311,7 @@ void Gen::convert() {
 	PrintQuadTable();
 }
 
-unsigned char* Gen::GenerateData() {
+unsigned char* Gen::generateData() {
 	// vector<unsigned char> DataArray;
 	vector<pair<string, int>> sortedAddr = sort(this->addressTable);
 	PrintAddressTable();
@@ -351,5 +351,14 @@ unsigned char* Gen::GenerateData() {
 			}
 		}
 	}
-	return DataArray;
+	return DataArray;	
+}
+
+map<int, Token> Gen::generateAddressTypeMap() {
+	map<int, Token> temp;
+
+	for (auto i: this->addressTable) {
+		temp[i.second] = this->datatypeTable[i.first];
+	}
+	return temp;
 }

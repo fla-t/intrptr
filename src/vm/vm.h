@@ -1,6 +1,7 @@
 #include "../utils/opcode.h"
 #include "../utils/quad.h"
 #include "../utils/token.h"
+#include "../gen/gen.h"
 
 #include <vector>
 #include <iostream>
@@ -15,9 +16,16 @@ class VM {
 	vector<quad> machineCode;
 	unsigned char* ds;
 	int pc;
+	map<int, Token> addrtypeMap;
 public:
-	VM(vector<quad>, unsigned char*);
+	VM(vector<quad>, unsigned char*, map<int, Token>);
 	void run();
+
+	void VM::typeCheck(int, int);
+
+	int getIntFromDS(int);
+	void storeIntInDS(int, int);
+
 };
 
 #endif

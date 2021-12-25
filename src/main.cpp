@@ -24,9 +24,9 @@ int main(int argc, char** argv) {
 
 		Gen generator(newtranslator);
 		generator.convert();
-		unsigned char * ds = generator.GenerateData(); //data segment
-		
-		VM newvm(generator.converted, ds);
+		unsigned char* ds = generator.generateData();
+
+		VM newvm(generator.converted, ds, generator.generateAddressTypeMap());
 
 	}
 	else {
