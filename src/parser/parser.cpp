@@ -130,6 +130,7 @@ void Parser::initialization() {
 	printTabs(false);
 	cout << "Initialization" << endl;
 	prefix.append(TAB_SPACE);
+	
 	if (currentToken->token == Token::INT) {
 		intinit();
 	}

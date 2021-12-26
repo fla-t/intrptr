@@ -28,6 +28,9 @@ public:
 	
 	void Parse();
 	void match(Token, bool);
+	bool match(Pair, Pair);
+	void matchPair(Pair, Pair);
+
 	Pair newTemp(Token);
 
 	void statement();
