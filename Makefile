@@ -1,6 +1,6 @@
 TARGET_EXEC ?= ../bin/linuxExecutable
 
-BUILD_DIR ?= ./build
+BUILD_DIR ?= ./Linuxbuild
 SRC_DIRS ?= ./src
 
 SRCS := $(shell find $(SRC_DIRS) -name *.cpp)

@@ -31,7 +31,7 @@ public:
 	bool match(Pair, Pair);
 	void matchPair(Pair, Pair);
 
-	Pair newTemp(Token);
+	Pair newTemp(Pair);
 
 	void statement();
 	void input();

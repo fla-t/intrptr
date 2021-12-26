@@ -1,3 +1,5 @@
 int: j = 0;
-char: i = 'a';
-int: a = j + 12;
+while j < 2: {
+	println("lol");
+	j++;
+}

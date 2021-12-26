@@ -13,9 +13,49 @@ void VM::storeIntInDS(int index, int value) {
 	}
 }
 
+bool VM::match(int addr1, int addr2) {
+	// id id match	
+	Token x = addrtypeMap[addr1];
+	Token y = addrtypeMap[addr2];
+
+	if (x == y) {
+		return true;
+	}
+	else {
+		switch(y) {
+			case Token::INT:
+			case Token::NUM:
+				if (x == Token::INT) {return true;} 
+				break;
+			
+			case Token::CHAR:
+			case Token::LIT:
+				if (x == Token::CHAR) {return true;}
+				break;
+
+			default:
+				return false;
+		}
+		switch(x) {
+			case Token::INT:
+			case Token::NUM:
+				if (y == Token::INT) {return true;} 
+				break;
+			
+			case Token::CHAR:
+			case Token::LIT:
+				if (y == Token::CHAR) {return true;}
+				break;
+
+			default:
+				return false;
+		}
+	}
+}
+
 void VM::typeCheck(int addr1, int addr2) {
-	if (this->addrtypeMap[addr1] != this->addrtypeMap[addr2]) {
-		throw std::runtime_error("Type Mismatch");
+	if (!match(addr1, addr2)) {
+		throw std::runtime_error("Type Mismatch in VM");
 	}
 }
 
@@ -34,7 +74,7 @@ void VM::run() {
 			case Opcode::ADD:
 				typeCheck(machineCode[pc].var1, machineCode[pc].var2);
 
-				if (this->addrtypeMap[machineCode[pc].var1] == Token::INT) {
+				if (this->addrtypeMap[machineCode[pc].var1] == Token::INT || this->addrtypeMap[machineCode[pc].var1] == Token::NUM) {
 					int var1 = getIntFromDS(machineCode[pc].var1);
 					int var2 = getIntFromDS(machineCode[pc].var2);
 					int res = var1 + var2;
@@ -53,7 +93,7 @@ void VM::run() {
 			case Opcode::MUL:
 				typeCheck(machineCode[pc].var1, machineCode[pc].var2);
 
-				if (this->addrtypeMap[machineCode[pc].var1] == Token::INT) {
+				if (this->addrtypeMap[machineCode[pc].var1] == Token::INT || this->addrtypeMap[machineCode[pc].var1] == Token::NUM) {
 					int var1 = getIntFromDS(machineCode[pc].var1);
 					int var2 = getIntFromDS(machineCode[pc].var2);
 					int res = var1 * var2;
@@ -72,7 +112,7 @@ void VM::run() {
 			case Opcode::DIV:
 				typeCheck(machineCode[pc].var1, machineCode[pc].var2);
 
-				if (this->addrtypeMap[machineCode[pc].var1] == Token::INT) {
+				if (this->addrtypeMap[machineCode[pc].var1] == Token::INT || this->addrtypeMap[machineCode[pc].var1] == Token::NUM) {
 					int var1 = getIntFromDS(machineCode[pc].var1);
 					int var2 = getIntFromDS(machineCode[pc].var2);
 					int res = var1 / var2;
@@ -91,7 +131,7 @@ void VM::run() {
 			case Opcode::SUB:
 				typeCheck(machineCode[pc].var1, machineCode[pc].var2);
 
-				if (this->addrtypeMap[machineCode[pc].var1] == Token::INT) {
+				if (this->addrtypeMap[machineCode[pc].var1] == Token::INT || this->addrtypeMap[machineCode[pc].var1] == Token::NUM) {
 					int var1 = getIntFromDS(machineCode[pc].var1);
 					int var2 = getIntFromDS(machineCode[pc].var2);
 					int res = var1 - var2;
@@ -112,7 +152,7 @@ void VM::run() {
 			case Opcode::AS:
 				typeCheck(machineCode[pc].var1, machineCode[pc].store);
 
-				if (this->addrtypeMap[machineCode[pc].var1] == Token::INT) {
+				if (this->addrtypeMap[machineCode[pc].var1] == Token::INT || this->addrtypeMap[machineCode[pc].var1] == Token::NUM) {
 					int var1 = getIntFromDS(machineCode[pc].var1);
 					storeIntInDS(machineCode[pc].store, var1);
 				}
@@ -126,7 +166,7 @@ void VM::run() {
 
 			case Opcode::LT:
 				typeCheck(machineCode[pc].var1, machineCode[pc].var2);
-				if (this->addrtypeMap[machineCode[pc].var1] == Token::INT) {
+				if (this->addrtypeMap[machineCode[pc].var1] == Token::INT || this->addrtypeMap[machineCode[pc].var1] == Token::NUM) {
 					int var1 = getIntFromDS(machineCode[pc].var1);
 					int var2 = getIntFromDS(machineCode[pc].var2);
 					if (var1 < var2) {
@@ -144,7 +184,7 @@ void VM::run() {
 
 			case Opcode::LTE:
 				typeCheck(machineCode[pc].var1, machineCode[pc].var2);
-				if (this->addrtypeMap[machineCode[pc].var1] == Token::INT) {
+				if (this->addrtypeMap[machineCode[pc].var1] == Token::INT || this->addrtypeMap[machineCode[pc].var1] == Token::NUM) {
 					int var1 = getIntFromDS(machineCode[pc].var1);
 					int var2 = getIntFromDS(machineCode[pc].var2);
 					if (var1 <= var2) {
@@ -162,7 +202,7 @@ void VM::run() {
 
 			case Opcode::GT:
 				typeCheck(machineCode[pc].var1, machineCode[pc].var2);
-				if (this->addrtypeMap[machineCode[pc].var1] == Token::INT) {
+				if (this->addrtypeMap[machineCode[pc].var1] == Token::INT || this->addrtypeMap[machineCode[pc].var1] == Token::NUM) {
 					int var1 = getIntFromDS(machineCode[pc].var1);
 					int var2 = getIntFromDS(machineCode[pc].var2);
 					if (var1 > var2) {
@@ -180,7 +220,7 @@ void VM::run() {
 
 			case Opcode::GTE:
 				typeCheck(machineCode[pc].var1, machineCode[pc].var2);
-				if (this->addrtypeMap[machineCode[pc].var1] == Token::INT) {
+				if (this->addrtypeMap[machineCode[pc].var1] == Token::INT || this->addrtypeMap[machineCode[pc].var1] == Token::NUM) {
 					int var1 = getIntFromDS(machineCode[pc].var1);
 					int var2 = getIntFromDS(machineCode[pc].var2);
 					if (var1 <= var2) {
@@ -198,7 +238,7 @@ void VM::run() {
 
 			case Opcode::EQ:
 				typeCheck(machineCode[pc].var1, machineCode[pc].var2);
-				if (this->addrtypeMap[machineCode[pc].var1] == Token::INT) {
+				if (this->addrtypeMap[machineCode[pc].var1] == Token::INT || this->addrtypeMap[machineCode[pc].var1] == Token::NUM) {
 					int var1 = getIntFromDS(machineCode[pc].var1);
 					int var2 = getIntFromDS(machineCode[pc].var2);
 					if (var1 == var2) {
@@ -216,7 +256,7 @@ void VM::run() {
 
 			case Opcode::NEQ:
 				typeCheck(machineCode[pc].var1, machineCode[pc].var2);
-				if (this->addrtypeMap[machineCode[pc].var1] == Token::INT) {
+				if (this->addrtypeMap[machineCode[pc].var1] == Token::INT || this->addrtypeMap[machineCode[pc].var1] == Token::NUM) {
 					int var1 = getIntFromDS(machineCode[pc].var1);
 					int var2 = getIntFromDS(machineCode[pc].var2);
 					if (var1 != var2) {
@@ -239,13 +279,13 @@ void VM::run() {
 				break;
 
 			case Opcode::IN:
-				if (this->addrtypeMap[machineCode[pc].var1] == Token::INT) {
+				if (this->addrtypeMap[machineCode[pc].var1] == Token::INT || this->addrtypeMap[machineCode[pc].var1] == Token::NUM) {
 					int temp;
 					cin >> temp;
 
 					storeIntInDS(machineCode[pc].var1, temp);
 				}
-				else if (this->addrtypeMap[machineCode[pc].var1] == Token::CHAR) {
+				else if (this->addrtypeMap[machineCode[pc].var1] == Token::CHAR || this->addrtypeMap[machineCode[pc].var1] == Token::LIT) {
 					char temp;
 					cin >> temp;
 
@@ -254,7 +294,7 @@ void VM::run() {
 				break;
 
 			case Opcode::OUT:
-				if (this->addrtypeMap[machineCode[pc].var1] == Token::INT) {
+				if (this->addrtypeMap[machineCode[pc].var1] == Token::INT || this->addrtypeMap[machineCode[pc].var1] == Token::NUM) {
 					int temp = getIntFromDS(machineCode[pc].var1);
 					cout << temp;
 				}

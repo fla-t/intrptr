@@ -25,7 +25,7 @@ public:
 
 	int getIntFromDS(int);
 	void storeIntInDS(int, int);
-
+	bool match(int, int);
 };
 
 #endif

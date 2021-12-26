@@ -20,16 +20,23 @@ int bytesNeeded(Token x) {
 	else if (x == Token::CHAR) {return 1;}
 }
 
-Pair Translator::newTemp(Token x) {
+Pair Translator::newTemp(Pair x) {
+	
 	Pair newpair;
 	stringstream ss;
 	ss<<"t"<<this->tempCount++;
-	newpair.lexeme = ss.str();
-	newpair.token = x;
 
-	this->datatypeTable[newpair.lexeme] = x;
+	newpair.lexeme = ss.str();
+	if (x.token == Token::ID) {
+		newpair.token = this->datatypeTable[x.lexeme];
+	}
+	else {
+		newpair.token = x.token;
+	}
+
+	this->datatypeTable[newpair.lexeme] = newpair.token;
 	this->addressTable[newpair.lexeme] = this->currentAddr;
-	this->currentAddr += bytesNeeded(x);
+	this->currentAddr += bytesNeeded(newpair.token);
 
 	return newpair;
 }
@@ -78,7 +85,7 @@ void Translator::Parse() {
 	else {
 		statement();
 		PrintDataTypeTable();
-		PrintAddressTable();
+		// PrintAddressTable();
 		PrintTranslation();
 		if (currentToken == tokenStream.end()) {
 			cout << "Everything parsed successfully!" << endl;
@@ -795,7 +802,7 @@ Pair Translator::R(Pair R_n) {
 		
 		//sdt	
 		stringstream ss;
-		Pair temp = newTemp(R_n.token);
+		Pair temp = newTemp(R_n);
 		ss << temp.lexeme << " = " << R_n.lexeme << " + " << T_n.lexeme;
 		this->translation.push_back(ss.str());
 
@@ -807,7 +814,7 @@ Pair Translator::R(Pair R_n) {
 		Pair T_n = T();
 
 		stringstream ss;
-		Pair temp = newTemp(R_n.token);
+		Pair temp = newTemp(R_n);
 		ss << temp.lexeme << " = " << R_n.lexeme << " - " << T_n.lexeme;
 		this->translation.push_back(ss.str());
 
@@ -830,7 +837,7 @@ Pair Translator::Rprime(Pair RR_n) {
 
 		//sdt	
 		stringstream ss;
-		Pair temp = newTemp(RR_n.token);
+		Pair temp = newTemp(RR_n);
 		ss << temp.lexeme << " = " << RR_n.lexeme << " * " << F_n.lexeme;
 		this->translation.push_back(ss.str());
 
@@ -842,7 +849,7 @@ Pair Translator::Rprime(Pair RR_n) {
 
 		//sdt	
 		stringstream ss;
-		Pair temp = newTemp(RR_n.token);
+		Pair temp = newTemp(RR_n);
 		ss << temp.lexeme << " = " << RR_n.lexeme << " / " << F_n.lexeme;
 		this->translation.push_back(ss.str());
 
