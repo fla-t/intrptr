@@ -8,8 +8,8 @@ VM::VM(vector<quad> converted, unsigned char* ds, map<int, Token> addrmap) {
 }
 
 void VM::storeIntInDS(int index, int value) {
-	for (int i = index + 4; i > index; i--) {
-		ds[i] = (value >> ((i-3) * 8));
+	for (int i = index + 3, k = 3; i >= index; i--, k--) {
+		ds[i] = (value >> ((k - 3) * 8));
 	}
 }
 

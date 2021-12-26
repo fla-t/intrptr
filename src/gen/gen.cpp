@@ -328,8 +328,8 @@ unsigned char* Gen::generateData() {
 		if (this->initialvalTable[sortedAddr[i].first] != "") {
 			if (this->datatypeTable[sortedAddr[i].first] == Token::INT) {
 				int paramInt = stoi(this->initialvalTable[sortedAddr[i].first]);
-				for (int j = sortedAddr[i].second + 4; j > sortedAddr[i].second; j--) {
-					DataArray[j] = (paramInt >> ((j-3) * 8));
+				for (int j = sortedAddr[i].second + 3, k = 3; j >= sortedAddr[i].second; j--, k--) {
+					DataArray[j] = (paramInt >> ((k - 3) * 8));
 				}
 			}
 			else {
