@@ -1,6 +1,7 @@
 /build
 /src/main.exe
 /bin
+/Linuxbuild
 /.vs
 /cc-vs
 *.rar
