@@ -69,6 +69,9 @@ int VM::getIntFromDS(int index) {
 }
 
 void VM::run() {
+	cout<<"Initiating Code Execution: "<<endl;
+	cout<<"-----------------------------------"<<endl;
+
 	for (pc = 0; pc < machineCode.size(); pc++) {
 		switch(machineCode[pc].opcode) {
 			case Opcode::ADD:
@@ -312,4 +315,5 @@ void VM::run() {
 				break;
 		}
 	}
+	cout<<endl<<"-----------------------------------"<<endl;
 }
